@@ -141,7 +141,7 @@ body, html {
   .inicio input, .inicio select {
     max-width: 250px;
   }
-  
+
   .tabela-header {
     text-align: center;
     margin-bottom: 15px;
@@ -155,23 +155,31 @@ body, html {
     background: #2e313d;
     color: #ddd;
     font-size: 14px;
-    table-layout: fixed;
+    table-layout: auto;
   }
-  
+
   .tabela-cargas th,
   .tabela-cargas td {
     border: 1px solid #444;
-    padding: 10px;
+    padding: 8px 12px;
     text-align: center;
-    word-wrap: break-word;
+    white-space: nowrap;
   }
-  
+
   .tabela-cargas th {
     background: #3a3d4b;
     color: #00bcd4;
     font-weight: bold;
     font-size: 13px;
   }
+
+  .tabela-cargas select,
+  .tabela-cargas button {
+    margin-top: 4px;
+    padding: 4px 8px;
+    font-size: 13px;
+  }
+
   
   
   
