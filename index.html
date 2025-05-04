@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <title>Simulador de Logística</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+
+  <div class="dashboard">
+    <!-- Menu Lateral -->
+    <aside class="sidebar">
+      <h2>🚚 Logística</h2>
+      <nav>
+        <button onclick="switchTab('painel')">📊 Painel</button>
+        <button onclick="switchTab('cargas')">📦 Cargas</button>
+        <button onclick="switchTab('frota')">🚚 Frota</button>
+        <button onclick="switchTab('loja')">🛒 Loja</button>
+        <button onclick="switchTab('motoristas')">👥 Motoristas</button>
+        <button onclick="switchTab('perfil')">👤 Perfil</button>
+        <button onclick="switchTab('saves')">💾 Perfis</button>
+        <button onclick="resetarProgresso()">🗑️ Recomeçar</button>
+      </nav>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <main class="main-content">
+      <header class="topbar">
+        <span>📅 Tempo: <span id="tempoJogo">--</span></span>
+        <span>💼 Empresa: <strong id="nomeEmpresa">--</strong></span>
+        <span>🧠 XP: <strong id="xpJogador">--</strong></span>
+      </header>
+
+      <section id="uiContainer" class="painel-section">
+        <!-- O conteúdo principal será injetado aqui pelo ui.js -->
+      </section>
+    </main>
+
+    <!-- Mapa (à direita, quando aplicável) -->
+    <div id="mapaContainer">
+      <div id="map"></div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/utils.js"></script>
+  <script src="js/mapa.js"></script>
+  <script src="js/vehicles.js"></script>
+  <script src="js/economy.js"></script>
+  <script src="js/maintenance.js"></script>
+  <script src="js/staff.js"></script>
+  <script src="js/empresa.js"></script>
+  <script src="js/save.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/game.js"></script>
+
+  <!-- Inicializador -->
+  <script>
+    window.onload = () => {
+      if (!loadGame()) {
+        document.getElementById("uiContainer").innerHTML = `
+          <div class="inicio">
+            <h2>🎮 Bem-vindo ao Simulador de Logística</h2>
+            <p>Digite seu nome e escolha uma empresa para começar:</p>
+            <input id="playerName" placeholder="Seu nome" /><br><br>
+            <select id="companySelect">
+              <option value="Amazon">Amazon</option>
+              <option value="DHL">DHL</option>
+              <option value="DPD">DPD</option>
+            </select><br><br>
+            <button onclick="applyToJob()">📄 Enviar Currículo</button>
+          </div>
+        `;
+      }
+    };
+  </script>
+</body>
+</html>

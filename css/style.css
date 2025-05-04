@@ -1,0 +1,144 @@
+/* Reset e fontes */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #1e1f26;
+    color: #eee;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  /* Layout principal */
+  .dashboard {
+    display: flex;
+    height: 100vh;
+  }
+  
+  /* Sidebar (menu lateral) */
+  .sidebar {
+    background: #272933;
+    width: 220px;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .sidebar h2 {
+    color: #00bcd4;
+    margin-bottom: 30px;
+  }
+  
+  .sidebar nav button {
+    background: none;
+    border: none;
+    color: #ccc;
+    text-align: left;
+    font-size: 15px;
+    margin: 10px 0;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .sidebar nav button:hover {
+    background: #383a45;
+    color: #fff;
+  }
+  
+  /* Main content */
+  .main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  
+  .topbar {
+    background: #2e313d;
+    padding: 15px 25px;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #444;
+    color: #ccc;
+  }
+  
+  /* Painel de conteúdo */
+  .painel-section {
+    padding: 25px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  
+  /* Cards */
+  .card {
+    background: #2e313d;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    border: 1px solid #3e414f;
+    color: #ddd;
+  }
+  
+  .card h3 {
+    margin-top: 0;
+    color: #00bcd4;
+  }
+  
+  /* Input e botões */
+  input, select, button {
+    font-size: 14px;
+    padding: 8px 12px;
+    margin-top: 8px;
+    border-radius: 4px;
+    border: none;
+    outline: none;
+  }
+  
+  input, select {
+    width: 100%;
+    background: #444;
+    color: #fff;
+  }
+  
+  button {
+    background: #00bcd4;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  button:hover {
+    background: #0196aa;
+  }
+  
+  /* Mapa Leaflet */
+  #mapaContainer {
+    width: 400px;
+    height: 100vh;
+    background: #1e1f26;
+  }
+  
+  #map {
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Página inicial */
+  .inicio {
+    padding: 40px;
+    text-align: center;
+  }
+  
+  .inicio h2 {
+    color: #00bcd4;
+    font-size: 24px;
+  }
+  
+  .inicio input, .inicio select {
+    max-width: 250px;
+  }
+  
