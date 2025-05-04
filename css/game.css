@@ -108,4 +108,51 @@ body {
   margin-right: 10px;
   font-size: 18px;
 }
-    
+
+#deliveries {
+  list-style-type: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+#deliveries li {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  margin: 8px 0;
+  font-size: 14px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#deliveries li.store {
+  background-color: #e3f2fd; /* Azul claro para lojas */
+}
+
+#deliveries li.person {
+  background-color: #f1f8e9; /* Verde claro para pessoas */
+}
+
+#deliveries li:hover {
+  background-color: #e0e0e0;
+  transform: scale(1.05);
+}
+
+#deliveries li .icon {
+  margin-right: 10px;
+}
+
+#deliveries li .assign-btn {
+  float: right;
+  padding: 5px 10px;
+  font-size: 12px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#deliveries li .assign-btn:hover {
+  background-color: #0056b3;
+}
