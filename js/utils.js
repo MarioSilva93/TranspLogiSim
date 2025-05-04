@@ -43,13 +43,16 @@ function lerp(start, end, amt) {
       toast.remove();
     }, duracao);
   }
-  
+
   function recomecarJogo() {
-    localStorage.removeItem("savegame");
-    game = null;
-    gameClock = 0;
-  
-    // Reinicia o fluxo de criação de perfil
-    renderCriacaoPerfil();
+  localStorage.removeItem("savegame");
+  game = null;
+  gameClock = 0;
+  currentTab = "painel";
+  notificar("🔄 Jogo reiniciado!", "info");
+
+  // Recomeçar o fluxo de criação
+  renderCriacaoPerfil(); // <- esta função deve estar disponível globalmente
   }
+
   

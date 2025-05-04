@@ -7,28 +7,23 @@ const paisesECidades = {
     "Portugal": ["Lisboa", "Porto", "Coimbra", "Braga", "Faro"]
   };
   
-  // Renderiza a criação do perfil
   function renderCriacaoPerfil() {
     let html = `
       <div class="inicio">
         <h2>🎮 Bem-vindo ao Simulador de Logística</h2>
         <p>Digite seu nome e escolha uma localização inicial:</p>
         <input id="playerName" placeholder="Seu nome" /><br><br>
-  
         <select id="paisSelect" onchange="atualizarCidades()">
           <option value="">🌍 Selecione um país</option>
           ${Object.keys(paisesECidades).map(p => `<option>${p}</option>`).join('')}
         </select><br><br>
-  
-        <select id="cidadeSelect">
-          <option value="">🏙️ Selecione uma cidade</option>
-        </select><br><br>
-  
+        <select id="cidadeSelect"><option value="">🏙️ Selecione uma cidade</option></select><br><br>
         <button onclick="confirmarPerfil()">✅ Criar Perfil</button>
       </div>
     `;
     document.getElementById("uiContainer").innerHTML = html;
   }
+  
   
   // Atualiza cidades conforme país
   function atualizarCidades() {
