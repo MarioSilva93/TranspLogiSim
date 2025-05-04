@@ -72,7 +72,7 @@ const paisesECidades = {
       pais: pais,
       xp: 0,
       nivel: 1,
-      dinheiro: 10000,
+      dinheiro: 500000,
       vehicles: [
         {
           id: 1, type: 'Carrinha', capacity: 3, speed: 60,

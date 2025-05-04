@@ -203,6 +203,8 @@ function assign(orderId) {
   order.assigned = true;
   notificar(`📦 Entrega da carga #${order.id} iniciada.`);
   renderDispatcherUI();
+  atualizarMapa(); // mostra rota no mapa
+
 }
 
 function switchTab(tab) {

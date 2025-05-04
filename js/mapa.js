@@ -1,4 +1,6 @@
 let map;
+let vehicleLayer = null;
+
 const cityCoords = {
   "Zurique": [47.3769, 8.5417],
   "Genebra": [46.2044, 6.1432],
@@ -34,7 +36,7 @@ const cityCoords = {
 
 function setup() {
   if (map) {
-    map.remove(); // 🧼 remove o mapa anterior
+    map.remove(); // remove mapa anterior
     map = null;
   }
 
@@ -44,8 +46,9 @@ function setup() {
     maxZoom: 18,
     attribution: '© OpenStreetMap'
   }).addTo(map);
-}
 
+  vehicleLayer = L.layerGroup().addTo(map);
+}
 
 function focarMapaNaCidade(nomeCidade) {
   const coords = cityCoords[nomeCidade];
@@ -62,4 +65,35 @@ function focarMapaNaCidade(nomeCidade) {
       .bindPopup(`📍 Cidade-sede: ${nomeCidade}`)
       .openPopup();
   }
+}
+
+function atualizarMapa() {
+  if (!map || !game || !game.vehicles) return;
+
+  vehicleLayer.clearLayers();
+
+  game.vehicles.forEach(vehicle => {
+    if (vehicle.delivery) {
+      const { fromCoords, toCoords } = vehicle.delivery;
+      if (!fromCoords || !toCoords) return;
+
+      const iconUrl = vehicle.type === "Carrinha" ? "img/van.png" : "img/truck.png";
+
+      const customIcon = L.icon({
+        iconUrl,
+        iconSize: [32, 32],
+        iconAnchor: [16, 16]
+      });
+
+      L.marker(fromCoords, { icon: customIcon })
+        .addTo(vehicleLayer)
+        .bindPopup(`${vehicle.name}<br>Saída: ${vehicle.delivery.order.from}`);
+
+      L.marker(toCoords)
+        .addTo(vehicleLayer)
+        .bindPopup(`Destino: ${vehicle.delivery.order.to}`);
+
+      L.polyline([fromCoords, toCoords], { color: "orange" }).addTo(vehicleLayer);
+    }
+  });
 }
