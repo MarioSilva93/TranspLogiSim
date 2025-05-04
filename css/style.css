@@ -149,7 +149,7 @@ body, html {
   
   .tabela-cargas {
     width: 100%;
-    max-width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
     border-collapse: collapse;
     background: #2e313d;
@@ -161,24 +161,57 @@ body, html {
   .tabela-cargas th,
   .tabela-cargas td {
     border: 1px solid #444;
-    padding: 8px 12px;
+    padding: 10px 12px;
     text-align: center;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
-
+  
+  /* Definir larguras proporcionais para cada coluna */
+  .tabela-cargas th:nth-child(1),
+  .tabela-cargas td:nth-child(1) {
+    width: 5%;
+  }
+  .tabela-cargas th:nth-child(2),
+  .tabela-cargas td:nth-child(2),
+  .tabela-cargas th:nth-child(3),
+  .tabela-cargas td:nth-child(3) {
+    width: 12%;
+  }
+  .tabela-cargas th:nth-child(4),
+  .tabela-cargas td:nth-child(4) {
+    width: 15%;
+  }
+  .tabela-cargas th:nth-child(5),
+  .tabela-cargas td:nth-child(5),
+  .tabela-cargas th:nth-child(6),
+  .tabela-cargas td:nth-child(6) {
+    width: 10%;
+  }
+  .tabela-cargas th:nth-child(7),
+  .tabela-cargas td:nth-child(7) {
+    width: 10%;
+  }
+  .tabela-cargas th:nth-child(8),
+  .tabela-cargas td:nth-child(8) {
+    width: 15%;
+  }
+  
   .tabela-cargas th {
     background: #3a3d4b;
     color: #00bcd4;
     font-weight: bold;
     font-size: 13px;
   }
-
+  
   .tabela-cargas select,
   .tabela-cargas button {
     margin-top: 4px;
     padding: 4px 8px;
     font-size: 13px;
   }
+  
 
   
   
