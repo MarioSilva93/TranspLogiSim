@@ -77,13 +77,21 @@ function atualizarMapa() {
       const { fromCoords, toCoords } = vehicle.delivery;
       if (!fromCoords || !toCoords) return;
 
-      const iconUrl = vehicle.type === "Carrinha" ? "img/van.png" : "img/truck.png";
-
-      const customIcon = L.icon({
-        iconUrl,
-        iconSize: [32, 32],
-        iconAnchor: [16, 16]
-      });
+      const icons = {
+        'Camião': L.icon({
+          iconUrl: 'https://img.cdndsgni.com/preview/11825355.jpg',
+          iconSize: [32, 32],
+          iconAnchor: [16, 16],
+          popupAnchor: [0, -16]
+        }),
+        'Carrinha': L.icon({
+          iconUrl: 'https://img.cdndsgni.com/preview/12329727.jpg',
+          iconSize: [28, 28],
+          iconAnchor: [14, 14],
+          popupAnchor: [0, -14]
+        })
+      };
+      
 
       L.marker(fromCoords, { icon: customIcon })
         .addTo(vehicleLayer)
