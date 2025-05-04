@@ -33,7 +33,7 @@ function startDispatcherWork(company, cidade, pais, nomeJogador) {
     orders: []
   };
 
-  gerarPedidos();
+  generateOrders(0);
   startClock();
   renderDashboardUI();
 }

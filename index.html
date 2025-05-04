@@ -37,6 +37,7 @@
       </header>
 
       <section id="uiContainer" class="painel-section"></section>
+      <section id="painel-entregas" class="painel-section painel-entregas"></section>
     </main>
 
     <div id="mapaContainer">
@@ -44,15 +45,15 @@
     </div>
   </div>
 
-  <!-- Scripts -->
   <script src="js/utils.js"></script>
+  <script src="js/TranspLogiSimve_Main.js"></script>
   <script src="js/mapa.js"></script>
   <script src="js/vehicles.js"></script>
   <script src="js/economy.js"></script>
   <script src="js/maintenance.js"></script>
   <script src="js/staff.js"></script>
   <script src="js/empresa.js"></script>
-  <script src="js/save.js"></script>
+  <script src="js/save.js"></script> <!-- 🔴 este antes do game.js -->
   <script src="js/ui.js"></script>
   <script src="js/charts.js"></script>
   <script src="js/setupPerfil.js"></script>
@@ -60,15 +61,16 @@
   <script src="js/rotasAvancadas.js"></script>
   <script src="js/planeamentoAvancado.js"></script>
   <script src="js/game.js"></script>
+  
 
   <!-- Inicializador -->
-<script>
-  window.onload = () => {
-    if (!loadGame()) {
-      renderCriacaoPerfil(); // função correta que mostra o formulário com botão para confirmarPerfil()
-    }
-  };
-</script>
+  <script>
+    window.onload = () => {
+      if (!loadGame()) {
+        renderCriacaoPerfil();
+      }
+    };
+  </script>
 
 
   <div id="notificacoes" class="notificacoes-container"></div>

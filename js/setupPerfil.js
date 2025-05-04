@@ -78,7 +78,7 @@ const paisesECidades = {
     };
   
     startClock();
-    generateOrders(10);
+    generateOrders(0);
     renderDispatcherUI();
     setup();
     focarMapaNaCidade(cidade); // NOVO: centraliza no mapa
