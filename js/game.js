@@ -26,7 +26,7 @@ function applyToJob() {
   const nome = document.getElementById('playerName').value.trim();
 
   if (!nome) {
-    alert("Por favor, insira o seu nome.");
+    notificar("Por favor, insira o seu nome.");
     return;
   }
 
@@ -167,12 +167,12 @@ function assign(orderId) {
   const vehicle = game.vehicles.find(v => v.id === vehicleId);
 
   if (!vehicle || vehicle.status !== 'Disponível') {
-    alert("Selecione um veículo disponível!");
+    notificar("Selecione um veículo disponível!");
     return;
   }
 
   if (order.weight > vehicle.capacity) {
-    alert("❌ Carga excede a capacidade do veículo!");
+    notificar("❌ Carga excede a capacidade do veículo!");
     game.score -= 5;
     renderDispatcherUI();
     return;
@@ -194,7 +194,7 @@ function assign(orderId) {
   };
 
   order.assigned = true;
-  alert(`📦 Entrega da carga #${order.id} iniciada.`);
+  notificar(`📦 Entrega da carga #${order.id} iniciada.`);
   renderDispatcherUI();
 }
 

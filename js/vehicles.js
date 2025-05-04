@@ -12,7 +12,7 @@ const lojaVeiculos = [
   function comprarVeiculo(index) {
     const v = lojaVeiculos[index];
     if (game.dinheiro < v.preco) {
-      alert("❌ Dinheiro insuficiente para comprar este veículo!");
+      notificar("❌ Dinheiro insuficiente para comprar este veículo!");
       return;
     }
   
@@ -30,7 +30,7 @@ const lojaVeiculos = [
   
     game.vehicles.push(novoVeiculo);
     game.dinheiro -= v.preco;
-    alert(`✅ Veículo ${v.nome} comprado com sucesso!`);
+    notificar(`✅ Veículo ${v.nome} comprado com sucesso!`);
     renderDispatcherUI();
   }
   

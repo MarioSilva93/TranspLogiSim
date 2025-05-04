@@ -9,10 +9,10 @@ function comprarEmpresa() {
       game.player.dinheiroTotal -= 50000;
       game.company = game.player.nome + " Transportes";
       game.salario = 0;
-      alert("🎉 Agora és o dono da empresa!");
+      notificar("🎉 Agora és o dono da empresa!");
       renderDispatcherUI();
     } else {
-      alert("💰 Ainda não tens dinheiro suficiente para comprar a empresa!");
+      notificar("💰 Ainda não tens dinheiro suficiente para comprar a empresa!");
     }
   }
   

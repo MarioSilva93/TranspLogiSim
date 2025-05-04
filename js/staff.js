@@ -14,7 +14,7 @@ function contratarMotorista() {
       ativo: true
     });
   
-    alert(`👤 ${nome} foi contratado!`);
+    notificar(`👤 ${nome} foi contratado!`);
     renderDispatcherUI();
   }
   

@@ -8,13 +8,13 @@ function saveProfile(nome) {
       gameClock
     };
     localStorage.setItem(`perfil_${nome}`, JSON.stringify(dados));
-    alert(`💾 Jogo salvo como perfil "${nome}"`);
+    notificar(`💾 Jogo salvo como perfil "${nome}"`);
   }
   
   function loadProfile(nome) {
     const dados = localStorage.getItem(`perfil_${nome}`);
     if (!dados) {
-      alert("Perfil não encontrado.");
+      notificar("Perfil não encontrado.");
       return;
     }
   
@@ -38,6 +38,6 @@ function saveProfile(nome) {
   
   function apagarPerfil(nome) {
     localStorage.removeItem(`perfil_${nome}`);
-    alert(`Perfil "${nome}" apagado com sucesso.`);
+    notificar(`Perfil "${nome}" apagado com sucesso.`);
   }
 
