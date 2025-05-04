@@ -142,60 +142,30 @@ body, html {
     max-width: 250px;
   }
 
-  .tabela-header {
-    text-align: center;
-    margin-bottom: 15px;
+  .tabela-cargas-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    padding: 0 20px;
+    box-sizing: border-box;
   }
   
   .tabela-cargas {
     width: 100%;
-    max-width: 1200px;
+    min-width: 1100px;
     margin: 0 auto;
     border-collapse: collapse;
     background: #2e313d;
     color: #ddd;
-    font-size: 14px;
-    table-layout: fixed;
+    font-size: 15px;
+    table-layout: auto;
   }
   
   .tabela-cargas th,
   .tabela-cargas td {
     border: 1px solid #444;
-    padding: 10px 12px;
+    padding: 12px 16px;
     text-align: center;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  
-  /* Definir larguras proporcionais para cada coluna */
-  .tabela-cargas th:nth-child(1),
-  .tabela-cargas td:nth-child(1) {
-    width: 5%;
-  }
-  .tabela-cargas th:nth-child(2),
-  .tabela-cargas td:nth-child(2),
-  .tabela-cargas th:nth-child(3),
-  .tabela-cargas td:nth-child(3) {
-    width: 12%;
-  }
-  .tabela-cargas th:nth-child(4),
-  .tabela-cargas td:nth-child(4) {
-    width: 15%;
-  }
-  .tabela-cargas th:nth-child(5),
-  .tabela-cargas td:nth-child(5),
-  .tabela-cargas th:nth-child(6),
-  .tabela-cargas td:nth-child(6) {
-    width: 10%;
-  }
-  .tabela-cargas th:nth-child(7),
-  .tabela-cargas td:nth-child(7) {
-    width: 10%;
-  }
-  .tabela-cargas th:nth-child(8),
-  .tabela-cargas td:nth-child(8) {
-    width: 15%;
   }
   
   .tabela-cargas th {
@@ -211,8 +181,4 @@ body, html {
     padding: 4px 8px;
     font-size: 13px;
   }
-  
-
-  
-  
   
