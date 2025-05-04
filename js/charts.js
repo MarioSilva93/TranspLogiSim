@@ -1,52 +1,59 @@
-/**
- * Renderiza os gráficos de estatísticas usando Chart.js
- */
-function renderGraficos() {
-    if (!game.player.historico || game.player.historico.length === 0) {
-      return;
+function renderXPChart() {
+  const ctx = document.getElementById('graficoXP');
+  if (!ctx) return;
+
+  const data = {
+    labels: ['XP Atual', 'XP Próximo Nível'],
+    datasets: [{
+      label: 'Experiência',
+      data: [game.xp, Math.max(100, 100 + game.nivel * 50)],
+      backgroundColor: ['#00bcd4', '#555']
+    }]
+  };
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: data,
+    options: {
+      plugins: {
+        legend: { display: false }
+      },
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
     }
-  
-    const ctx1 = document.getElementById("graficoEntregas").getContext("2d");
-    const ctx2 = document.getElementById("graficoXP").getContext("2d");
-  
-    const blocos = game.player.historico.map(e => `🕒 ${e.bloco * 30}min`);
-    const entregas = game.player.historico.map(e => e.entregas);
-    const xp = game.player.historico.map(e => e.xp);
-  
-    new Chart(ctx1, {
-      type: 'bar',
-      data: {
-        labels: blocos,
-        datasets: [{
-          label: 'Entregas por tempo',
-          data: entregas,
-          backgroundColor: '#00bcd4'
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: { legend: { display: false } },
-        scales: { y: { beginAtZero: true } }
+  });
+}
+
+function renderEntregasChart() {
+  const ctx = document.getElementById('graficoEntregas');
+  if (!ctx) return;
+
+  const noPrazo = game.player.entregasNoPrazo || 0;
+  const atrasadas = (game.player.entregas || 0) - noPrazo;
+
+  const data = {
+    labels: ['No Prazo', 'Atrasadas'],
+    datasets: [{
+      label: 'Entregas',
+      data: [noPrazo, atrasadas],
+      backgroundColor: ['#4caf50', '#e53935']
+    }]
+  };
+
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: data,
+    options: {
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { color: '#ccc' }
+        }
       }
-    });
-  
-    new Chart(ctx2, {
-      type: 'line',
-      data: {
-        labels: blocos,
-        datasets: [{
-          label: 'XP acumulado',
-          data: xp,
-          fill: false,
-          borderColor: '#4caf50',
-          tension: 0.3
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: { legend: { display: false } },
-        scales: { y: { beginAtZero: true } }
-      }
-    });
-  }
-  
+    }
+  });
+}

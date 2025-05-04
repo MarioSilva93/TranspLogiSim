@@ -1,156 +1,98 @@
-let veiculoSelecionado = null;
+// Evitar declaração duplicada
+window.veiculoSelecionado = window.veiculoSelecionado || null;
+window.cargasSelecionadas = window.cargasSelecionadas || [];
 
-function renderPlanejamentoAvancado() {
-  const container = document.getElementById("uiContainer");
-  container.className = ""; // Remove classe antiga (evita grid indesejado)
+function abrirPlaneamentoAvancado() {
+  const html = `
+    <h2>🚛 Planeamento de Carga Avançado</h2>
+    <p>Selecione um veículo e adicione cargas que ele possa levar.</p>
+    <label>Veículo:</label>
+    <select id="selectVeiculo">
+      <option value="">-- Escolha um veículo --</option>
+      ${game.vehicles
+        .filter(v => v.status === "Disponível")
+        .map(v => `<option value="${v.id}">${v.name}</option>`)
+        .join("")}
+    </select>
+    <div id="cargasPlaneadas"></div>
+    <button onclick="confirmarPlaneamento()">✅ Despachar</button>
+    <button onclick="renderDispatcherUI()">🔙 Cancelar</button>
+  `;
+  document.getElementById("uiContainer").innerHTML = html;
 
-  let html = `<h2>🧠 Planeamento Avançado</h2>`;
-  html += `<div class="planejamento-avancado">`;
-
-  // 🟦 Coluna 1: Seleção de veículo
-  html += `<div>
-    <h3>1️⃣ Veículo disponível</h3>`;
-  const disponiveis = game.vehicles.filter(v => v.status === "Disponível");
-  if (disponiveis.length === 0) {
-    html += `<p>❌ Nenhum veículo disponível.</p>`;
-  } else {
-    html += `<select id="seletorVeiculo" onchange="selecionarVeiculoAvancado()">`;
-    html += `<option value="">-- Escolher --</option>`;
-    disponiveis.forEach(v => {
-      html += `<option value="${v.id}">${v.name} (${v.capacity}t)</option>`;
-    });
-    html += `</select>`;
-  }
-  html += `</div>`;
-
-  // 🟩 Coluna 2: Cargas próximas
-  html += `<div><h3>2️⃣ Cargas compatíveis</h3>`;
-  if (veiculoSelecionado) {
-    const veiculo = game.vehicles.find(v => v.id === veiculoSelecionado);
-    const pesoAtual = veiculo.entregas?.reduce((s, e) => s + e.order.weight, 0) || 0;
-    const pesoRestante = veiculo.capacity - pesoAtual;
-
-    html += `<p>Peso restante: <strong>${pesoRestante}t</strong></p>`;
-    html += `
-      <table class="tabela-cargas">
-        <thead>
-          <tr><th>ID</th><th>De</th><th>Para</th><th>Carga</th><th>Peso</th><th>Distância</th><th>Prazo</th><th>Ação</th></tr>
-        </thead><tbody>
-    `;
-
-    game.orders.filter(o => !o.assigned).forEach(o => {
-      const distancia = calcularDistanciaEntre(veiculo.location, o.from);
-      const podeAdicionar = pesoRestante >= o.weight && distancia <= 50;
-
-      html += `<tr>
-        <td>#${o.id}</td>
-        <td>${o.from} (${distancia.toFixed(0)}km)</td>
-        <td>${o.to}</td>
-        <td>${o.cargo}</td>
-        <td>${o.weight}t</td>
-        <td>${o.distance}km</td>
-        <td>${o.deadline}h</td>
-        <td>${podeAdicionar
-          ? `<button onclick="adicionarCargaPlaneada(${o.id})">➕</button>`
-          : `<span style="color:#888;">Indisponível</span>`}</td>
-      </tr>`;
-    });
-
-    html += `</tbody></table>`;
-  } else {
-    html += `<p>🔍 Selecione um veículo para ver cargas compatíveis.</p>`;
-  }
-  html += `</div>`;
-
-  // 🟥 Coluna 3: Rota montada
-  html += `<div><h3>3️⃣ Rota planeada</h3>`;
-  if (veiculoSelecionado) {
-    const veiculo = game.vehicles.find(v => v.id === veiculoSelecionado);
-    if (veiculo.entregas?.length > 0) {
-      html += `<ul>`;
-      veiculo.entregas.forEach(e => {
-        html += `<li>${e.order.cargo} → ${e.order.to} (${e.order.weight}t)</li>`;
-      });
-      html += `</ul><br>
-        <button onclick="despacharRotaPlaneada()">🚚 Despachar</button>`;
-    } else {
-      html += `<p>Nenhuma carga atribuída ainda.</p>`;
-    }
-  }
-  html += `</div>`;
-
-  html += `</div>`; // fim do layout principal
-  container.innerHTML = html;
-}
-
-function selecionarVeiculoAvancado() {
-  const select = document.getElementById("seletorVeiculo");
-  veiculoSelecionado = parseInt(select.value);
-  renderPlanejamentoAvancado();
-}
-
-function adicionarCargaPlaneada(orderId) {
-  const ordem = game.orders.find(o => o.id === orderId);
-  const veiculo = game.vehicles.find(v => v.id === veiculoSelecionado);
-
-  if (!ordem || !veiculo) return;
-
-  if (!veiculo.entregas) veiculo.entregas = [];
-
-  const pesoAtual = veiculo.entregas.reduce((s, e) => s + e.order.weight, 0);
-  if (pesoAtual + ordem.weight > veiculo.capacity) {
-    notificar("❌ Capacidade excedida.");
-    return;
-  }
-
-  const fromCoords = cityCoords[ordem.from];
-  const toCoords = cityCoords[ordem.to];
-  if (!fromCoords || !toCoords) {
-    notificar("❌ Coordenadas não encontradas.");
-    return;
-  }
-
-  const tempoMin = Math.round(ordem.distance / veiculo.speed * 45);
-  veiculo.entregas.push({
-    order: ordem,
-    remainingTime: tempoMin,
-    originalTime: tempoMin,
-    fromCoords: { lat: fromCoords[0], lng: fromCoords[1] },
-    toCoords: { lat: toCoords[0], lng: toCoords[1] }
+  document.getElementById("selectVeiculo").addEventListener("change", function () {
+    window.veiculoSelecionado = parseInt(this.value);
+    window.cargasSelecionadas = [];
+    mostrarCargasDisponiveis();
   });
-
-  ordem.assigned = true;
-  notificar(`📦 Carga #${ordem.id} adicionada à rota de ${veiculo.name}`);
-  renderPlanejamentoAvancado();
-  atualizarMapa();
 }
 
-function despacharRotaPlaneada() {
+function mostrarCargasDisponiveis() {
+  const div = document.getElementById("cargasPlaneadas");
+  if (!veiculoSelecionado) return (div.innerHTML = "<p>Escolha um veículo acima.</p>");
+
   const veiculo = game.vehicles.find(v => v.id === veiculoSelecionado);
-  if (!veiculo || !veiculo.entregas || veiculo.entregas.length === 0) {
-    notificar("❌ Nenhuma carga atribuída.");
+  const cargasDisponiveis = game.orders.filter(
+    o =>
+      !o.assigned &&
+      o.from === veiculo.location.nome && // local atual do veículo
+      o.weight + cargasSelecionadas.reduce((t, c) => t + c.weight, 0) <= veiculo.capacity
+  );
+
+  let html = `<h3>Selecionar Cargas:</h3>`;
+  if (cargasDisponiveis.length === 0) {
+    html += "<p>❌ Nenhuma carga disponível neste local ou acima da capacidade.</p>";
+  } else {
+    html += cargasDisponiveis
+      .map(
+        (c) => `
+      <div class="card">
+        <strong>Carga #${c.id}</strong><br>
+        Para: ${c.to} | ${c.cargo} (${c.weight}t)<br>
+        <button onclick="adicionarCarga(${c.id})">➕ Adicionar</button>
+      </div>
+    `
+      )
+      .join("");
+  }
+
+  if (cargasSelecionadas.length > 0) {
+    html += `<h3>🧾 Cargas Selecionadas:</h3><ul>`;
+    cargasSelecionadas.forEach((c) => {
+      html += `<li>#${c.id} → ${c.to} (${c.weight}t)</li>`;
+    });
+    html += `</ul>`;
+  }
+
+  div.innerHTML = html;
+}
+
+function adicionarCarga(id) {
+  const carga = game.orders.find(o => o.id === id);
+  if (!carga) return;
+
+  carga.assigned = true;
+  cargasSelecionadas.push(carga);
+  mostrarCargasDisponiveis();
+}
+
+function confirmarPlaneamento() {
+  const veiculo = game.vehicles.find(v => v.id === veiculoSelecionado);
+  if (!veiculo || cargasSelecionadas.length === 0) {
+    alert("Selecione um veículo e pelo menos uma carga.");
     return;
   }
 
-  veiculo.status = "Em Rota";
-  notificar(`🚚 ${veiculo.name} partiu com ${veiculo.entregas.length} entregas.`);
-  veiculoSelecionado = null;
+  const entrega = {
+    pedidos: [...cargasSelecionadas],
+    rota: cargasSelecionadas.map(c => c.to),
+    atual: 0,
+    tempoTotal: 0
+  };
+
+  veiculo.delivery = entrega;
+  veiculo.status = "Entregando múltiplas cargas";
+  window.cargasSelecionadas = [];
   renderDispatcherUI();
   atualizarMapa();
-}
-
-function calcularDistanciaEntre(cidade1, cidade2) {
-  const a = cityCoords[cidade1];
-  const b = cityCoords[cidade2];
-  if (!a || !b) return Infinity;
-
-  const R = 6371;
-  const dLat = (b[0] - a[0]) * Math.PI / 180;
-  const dLon = (b[1] - a[1]) * Math.PI / 180;
-  const lat1 = a[0] * Math.PI / 180;
-  const lat2 = b[0] * Math.PI / 180;
-
-  const haversine = Math.sin(dLat / 2) ** 2 +
-    Math.sin(dLon / 2) ** 2 * Math.cos(lat1) * Math.cos(lat2);
-  return R * 2 * Math.atan2(Math.sqrt(haversine), Math.sqrt(1 - haversine));
 }

@@ -9,13 +9,12 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-
   <div class="dashboard">
-    <!-- Menu Lateral -->
+    <!-- Sidebar -->
     <aside class="sidebar">
       <h2>🚚 Logística</h2>
       <nav>
-        <button onclick="switchTab('dashboard')">📊 Dashboard</button>
+        <button onclick="switchTab('painel')">📊 Dashboard</button>
         <button onclick="switchTab('cargas')">📦 Cargas</button>
         <button onclick="switchTab('frota')">🚚 Frota</button>
         <button onclick="switchTab('loja')">🛒 Loja</button>
@@ -26,7 +25,7 @@
       </nav>
     </aside>
 
-    <!-- Conteúdo Principal -->
+    <!-- Conteúdo principal -->
     <main class="main-content">
       <header class="topbar">
         <span>📅 Tempo: <span id="tempoJogo">--</span></span>
@@ -37,19 +36,13 @@
         <span>👥 Empregados: <strong id="qtdMotoristas">--</strong></span>
       </header>
 
-      <section id="uiContainer" class="painel-section">
-        <!-- O conteúdo principal será injetado aqui -->
-      </section>
+      <section id="uiContainer" class="painel-section"></section>
     </main>
 
-    <!-- Mapa -->
     <div id="mapaContainer">
       <div id="map"></div>
     </div>
   </div>
-
-  <!-- 🔔 Container para notificações -->
-  <div id="notificacoes" class="notificacoes-container"></div>
 
   <!-- Scripts -->
   <script src="js/utils.js"></script>
@@ -72,9 +65,11 @@
   <script>
     window.onload = () => {
       if (!loadGame()) {
-        renderCriacaoPerfil(); // Inicia novo fluxo de perfil
+        renderEscolhaModo();
       }
     };
   </script>
+
+  <div id="notificacoes" class="notificacoes-container"></div>
 </body>
 </html>
