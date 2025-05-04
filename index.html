@@ -62,13 +62,14 @@
   <script src="js/game.js"></script>
 
   <!-- Inicializador -->
-  <script>
-    window.onload = () => {
-      if (!loadGame()) {
-        renderEscolhaModo();
-      }
-    };
-  </script>
+<script>
+  window.onload = () => {
+    if (!loadGame()) {
+      renderCriacaoPerfil(); // função correta que mostra o formulário com botão para confirmarPerfil()
+    }
+  };
+</script>
+
 
   <div id="notificacoes" class="notificacoes-container"></div>
 </body>

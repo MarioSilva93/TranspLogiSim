@@ -7,32 +7,19 @@ const paisesECidades = {
   };
   
   function renderCriacaoPerfil() {
-    let html = `
+    document.getElementById("uiContainer").innerHTML = `
       <div class="inicio">
-        <h2>🎮 Bem-vindo ao Simulador de Logística</h2>
-        <p>Digite seu nome e escolha uma localização inicial:</p>
+        <h2>🎮 Criar Perfil</h2>
+        <p>Digite seu nome e selecione país, cidade e empresa:</p>
         <input id="playerName" placeholder="Seu nome" /><br><br>
-  
-        <select id="paisSelect" onchange="atualizarCidades()">
-          <option value="">🌍 Selecione um país</option>
-          ${Object.keys(paisesECidades).map(p => `<option>${p}</option>`).join('')}
-        </select><br><br>
-  
-        <select id="cidadeSelect">
-          <option value="">🏙️ Selecione uma cidade</option>
-        </select><br><br>
-  
-        <div id="empresaContainer">
-          <select id="empresaSelect" disabled>
-            <option value="">🏢 Selecione uma empresa</option>
-          </select>
-        </div><br>
-  
+        <select id="paisSelect"><option value="Suíça">Suíça</option></select><br><br>
+        <select id="cidadeSelect"><option value="Zurique">Zurique</option></select><br><br>
+        <select id="empresaSelect"><option value="DHL">DHL</option></select><br><br>
         <button onclick="confirmarPerfil()">✅ Criar Perfil</button>
       </div>
     `;
-    document.getElementById("uiContainer").innerHTML = html;
   }
+  
   
   function atualizarCidades() {
     const pais = document.getElementById("paisSelect").value;
