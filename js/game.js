@@ -143,16 +143,19 @@ function completeDelivery(vehicle) {
 
   renderDispatcherUI();
 
-  // Histórico de desempenho (para gráfico)
+  // Histórico para gráfico
   if (!game.player.historico) game.player.historico = [];
-  const bloco = Math.floor(gameClock / 30);
+
+  const bloco = Math.floor(gameClock / 30); // 1 bloco = 30min de jogo
   const ultimo = game.player.historico.at(-1);
+
   if (!ultimo || ultimo.bloco !== bloco) {
-  game.player.historico.push({ bloco, entregas: 1, xp: game.xp });
+    game.player.historico.push({ bloco, entregas: 1, xp: game.xp });
   } else {
-  ultimo.entregas += 1;
-  ultimo.xp = game.xp;
+    ultimo.entregas += 1;
+    ultimo.xp = game.xp;
   }
+
 
 
 }
