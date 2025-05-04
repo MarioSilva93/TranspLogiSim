@@ -60,25 +60,15 @@
   <script src="js/save.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/charts.js"></script>
+  <script src="setupPerfil.js"></script>
+  <script src="empresasPorPais.js"></script>
   <script src="js/game.js"></script>
 
   <!-- Inicializador -->
   <script>
     window.onload = () => {
       if (!loadGame()) {
-        document.getElementById("uiContainer").innerHTML = `
-          <div class="inicio">
-            <h2>🎮 Bem-vindo ao Simulador de Logística</h2>
-            <p>Digite seu nome e escolha uma empresa para começar:</p>
-            <input id="playerName" placeholder="Seu nome" /><br><br>
-            <select id="companySelect">
-              <option value="Amazon">Amazon</option>
-              <option value="DHL">DHL</option>
-              <option value="DPD">DPD</option>
-            </select><br><br>
-            <button onclick="applyToJob()">📄 Enviar Currículo</button>
-          </div>
-        `;
+        renderCriacaoPerfil(); // inicia novo fluxo
       }
     };
   </script>
