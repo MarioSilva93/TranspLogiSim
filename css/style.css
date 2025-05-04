@@ -251,4 +251,14 @@ body, html {
     padding: 6px 10px;
     text-align: left;
   }
-    
+  .dashboard-resumo {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .grafico-card canvas {
+    width: 100% !important;
+  }
+      

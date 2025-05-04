@@ -189,43 +189,77 @@ function renderDispatcherUI() {
 
     }
   
-  function renderDashboardUI() {
-    const p = game.player;
-    const percent = p.entregas === 0 ? 0 : Math.round((p.entregasNoPrazo / p.entregas) * 100);
-  
-    let html = `
-      <div class="card">
-        <h3>💼 Empresa</h3>
-        <p>${game.company}</p>
-        <p>Saldo: ${formatEuro(game.dinheiro)}</p>
-      </div>
-      <div class="card">
-        <h3>👤 Jogador</h3>
-        <p>${p.nome}</p>
-        <p>XP: ${game.xp}</p>
-        <p>Total ganho: ${formatEuro(p.dinheiroTotal)}</p>
-      </div>
-      <div class="card">
-        <h3>📦 Entregas</h3>
-        <p>No prazo: ${p.entregasNoPrazo}/${p.entregas}</p>
-        <p>Pontualidade: ${percent}%</p>
-      </div>
-      <div class="card">
-        <h3>🚚 Frota</h3>
-        <p>Total: ${game.vehicles.length}</p>
-        <p>Disponíveis: ${game.vehicles.filter(v => v.status === "Disponível").length}</p>
-      </div>
-    `;
-  
-    document.getElementById("uiContainer").innerHTML = html;
-  
-    // 🔧 Atualizar topbar COMPLETA
-    document.getElementById("tempoJogo").textContent = formatarTempo(gameClock);
-    document.getElementById("nomeEmpresa").textContent = game.company;
-    document.getElementById("xpJogador").textContent = game.xp;
-    document.getElementById("dinheiroEmpresa").textContent = formatEuro(game.dinheiro);
-    document.getElementById("qtdFrota").textContent = game.vehicles.length;
-    document.getElementById("qtdMotoristas").textContent = game.staff ? game.staff.filter(m => m.ativo).length : 0;
-  }
+    function renderDashboardUI() {
+      const p = game.player;
+      const percent = p.entregas === 0 ? 0 : Math.round((p.entregasNoPrazo / p.entregas) * 100);
+    
+      let html = `<h2>📊 Dashboard</h2>`;
+      html += `<div class="dashboard-resumo">`;
+    
+      // Mapa
+      html += `
+        <div class="card">
+          <h3>🗺️ Localização em tempo real</h3>
+          <div id="miniMapa" style="height: 250px;"></div>
+        </div>
+      `;
+    
+      // Gráficos
+      html += `
+        <div class="card grafico-card">
+          <h3>📈 Estatísticas de XP</h3>
+          <canvas id="graficoXP" height="120"></canvas>
+        </div>
+        <div class="card grafico-card">
+          <h3>📦 Entregas</h3>
+          <canvas id="graficoEntregas" height="120"></canvas>
+        </div>
+      `;
+    
+      // Info geral
+      html += `
+        <div class="card">
+          <h3>💼 Empresa</h3>
+          <p><strong>${game.company}</strong></p>
+          <p>País: ${game.pais}</p>
+          <p>Cidade: ${game.sede}</p>
+          <p>Saldo: ${formatEuro(game.dinheiro)}</p>
+        </div>
+        <div class="card">
+          <h3>🚚 Frota</h3>
+          <p>Total: ${game.vehicles.length}</p>
+          <p>Disponíveis: ${game.vehicles.filter(v => v.status === "Disponível").length}</p>
+          <p>Camiões: ${game.vehicles.filter(v => v.type === "Camião").length}</p>
+          <p>Carrinhas: ${game.vehicles.filter(v => v.type === "Carrinha").length}</p>
+        </div>
+        <div class="card">
+          <h3>👥 Motoristas</h3>
+          <p>Total: ${game.staff?.length ?? 0}</p>
+          <p>Ativos: ${game.staff?.filter(m => m.ativo).length ?? 0}</p>
+        </div>
+        <div class="card">
+          <h3>📦 Entregas</h3>
+          <p>Total: ${p.entregas}</p>
+          <p>No prazo: ${p.entregasNoPrazo}</p>
+          <p>Pontualidade: ${percent}%</p>
+        </div>
+      `;
+    
+      html += `</div>`;
+      document.getElementById("uiContainer").innerHTML = html;
+    
+      // Redesenha gráficos
+      renderXPChart();
+      renderEntregasChart();
+    
+      // Redesenha mini mapa
+      if (map) {
+        setTimeout(() => {
+          map.invalidateSize();
+          draw();
+        }, 200);
+      }
+    }
+    
   
   
