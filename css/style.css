@@ -148,7 +148,7 @@ body, html {
   }
   
   .tabela-cargas {
-    width: 100%;
+    width: calc(100% - 40px);
     max-width: 98%;
     margin: 0 auto;
     border-collapse: collapse;
