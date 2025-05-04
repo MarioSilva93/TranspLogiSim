@@ -7,15 +7,6 @@ const paisesECidades = {
     "Portugal": ["Lisboa", "Porto", "Coimbra", "Braga", "Faro"]
   };
   
-  // 🚛 Empresas por país
-  const empresasPorPais = {
-    "Suíça": ["DPD", "Planzer", "Galliker"],
-    "Alemanha": ["Dachser", "DB Schenker", "Hermes"],
-    "França": ["La Poste", "Chronopost", "Geodis"],
-    "Espanha": ["SEUR", "Correos Express", "MRW"],
-    "Portugal": ["CTT Expresso", "Nacex", "Torrestir"]
-  };
-  
   // 🧾 Interface inicial de criação de perfil
   function renderCriacaoPerfil() {
     let html = `

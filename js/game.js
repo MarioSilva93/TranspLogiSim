@@ -71,20 +71,26 @@ function startDispatcherWork(company, nomeJogador) {
   setup(); // inicia o mapa após o UI estar pronto
 }
 
-function generateOrders(qtd) {
+function generateOrders(qtd = 10) {
   const cargos = ['Roupas', 'Eletrônicos', 'Alimentos', 'Móveis', 'Medicamentos'];
-  const cidades = Object.keys(cityCoords);
+  const cidades = [
+    'Zurique', 'Genebra', 'Lausana', 'Basileia', 'Berna',
+    'Berlim', 'Munique', 'Hamburgo', 'Frankfurt', 'Colónia',
+    'Paris', 'Marselha', 'Lyon', 'Toulouse', 'Nice',
+    'Madrid', 'Barcelona', 'Valência', 'Sevilha', 'Bilbau',
+    'Lisboa', 'Porto', 'Coimbra', 'Braga', 'Faro'
+  ];
 
   for (let i = 0; i < qtd; i++) {
-    let from = cidades[randInt(0, cidades.length - 1)];
+    const from = cidades[Math.floor(Math.random() * cidades.length)];
     let to;
     do {
-      to = cidades[randInt(0, cidades.length - 1)];
+      to = cidades[Math.floor(Math.random() * cidades.length)];
     } while (to === from);
 
-    const cargo = cargos[randInt(0, cargos.length - 1)];
-    const distance = randInt(50, 300);
-    const weight = randInt(1, 8);
+    const cargo = cargos[Math.floor(Math.random() * cargos.length)];
+    const distance = Math.floor(Math.random() * 400) + 50;
+    const weight = Math.floor(Math.random() * 10) + 1;
     const deadline = Math.max((distance / 60).toFixed(1), 1.5);
 
     game.orders.push({
@@ -99,6 +105,7 @@ function generateOrders(qtd) {
     });
   }
 }
+
 
 function startClock() {
   clearInterval(intervalId);

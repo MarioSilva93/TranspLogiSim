@@ -4,7 +4,7 @@ const empresasPorPais = {
     "França": ["La Poste", "Chronopost", "Geodis"],
     "Espanha": ["SEUR", "Correos Express", "MRW"],
     "Portugal": ["CTT Expresso", "Nacex", "Torrestir"]
-  };
+  };  
   
   function renderSelecaoEmpresa(pais) {
     const empresas = empresasPorPais[pais] || ["Empresa Genérica"];
