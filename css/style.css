@@ -200,3 +200,35 @@ body, html {
     align-items: center;
     gap: 10px;
   }
+
+  .notificacoes-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .toast {
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #fff;
+    animation: aparecer 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    min-width: 220px;
+    max-width: 300px;
+  }
+  
+  .toast.sucesso    { background: #4caf50; }
+  .toast.erro       { background: #f44336; }
+  .toast.aviso      { background: #ff9800; }
+  .toast.info       { background: #2196f3; }
+  
+  @keyframes aparecer {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  

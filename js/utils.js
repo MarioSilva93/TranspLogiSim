@@ -31,3 +31,16 @@ function lerp(start, end, amt) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
   
+  function notificar(mensagem, tipo = "info", duracao = 4000) {
+    const container = document.getElementById("notificacoes");
+    const toast = document.createElement("div");
+    toast.className = `toast ${tipo}`;
+    toast.innerHTML = mensagem;
+  
+    container.appendChild(toast);
+  
+    setTimeout(() => {
+      toast.remove();
+    }, duracao);
+  }
+  
