@@ -2,77 +2,27 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8" />
-  <title>Simulador de Logística</title>
+  <title>TranspLogiSimve</title>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <div class="dashboard">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <h2>🚚 Logística</h2>
-      <nav>
-        <button onclick="switchTab('painel')">📊 Dashboard</button>
-        <button onclick="switchTab('cargas')">📦 Cargas</button>
-        <button onclick="switchTab('frota')">🚚 Frota</button>
-        <button onclick="switchTab('loja')">🛒 Loja</button>
-        <button onclick="switchTab('motoristas')">👥 Motoristas</button>
-        <button onclick="switchTab('perfil')">👤 Perfil</button>
-        <button onclick="switchTab('saves')">💾 Perfis</button>
-        <button onclick="recomecarJogo()">🔄 Recomeçar</button>
-      </nav>
-    </aside>
-
-    <!-- Conteúdo principal -->
-    <main class="main-content">
-      <header class="topbar">
-        <span>📅 Tempo: <span id="tempoJogo">--</span></span>
-        <span>💼 Empresa: <strong id="nomeEmpresa">--</strong></span>
-        <span>🧠 XP: <strong id="xpJogador">--</strong></span>
-        <span>💰 Saldo: <strong id="dinheiroEmpresa">--</strong></span>
-        <span>🚚 Frota: <strong id="qtdFrota">--</strong></span>
-        <span>👥 Empregados: <strong id="qtdMotoristas">--</strong></span>
-      </header>
-
-      <section id="uiContainer" class="painel-section"></section>
-      <section id="painel-entregas" class="painel-section painel-entregas"></section>
-    </main>
-
-    <div id="mapaContainer">
-      <div id="map"></div>
-    </div>
+  <div class="topbar">
+    <span>Tempo: <span id="tempo">0</span>h</span>
+    <span>Saldo: <span id="saldo">0 €</span></span>
+    <span>XP: <span id="xp">0</span></span>
+    <button onclick="guardarJogo()">💾 Guardar</button>
+    <button onclick="carregarJogo()">📂 Carregar</button>
+    <button onclick="comprarVeiculo()">➕ Comprar Veículo (2000€)</button>
   </div>
+  <div id="painel-entregas"></div>
+  <div id="painel-veiculos"></div>
+  <div id="notificacoes" class="notificacoes"></div>
+  <div id="map" style="height: 500px;"></div>
 
   <script src="js/utils.js"></script>
-  <script src="js/TranspLogiSimve_Main.js"></script>
   <script src="js/mapa.js"></script>
-  <script src="js/vehicles.js"></script>
-  <script src="js/economy.js"></script>
-  <script src="js/maintenance.js"></script>
-  <script src="js/staff.js"></script>
-  <script src="js/empresa.js"></script>
-  <script src="js/save.js"></script> <!-- 🔴 este antes do game.js -->
-  <script src="js/ui.js"></script>
-  <script src="js/charts.js"></script>
-  <script src="js/setupPerfil.js"></script>
-  <script src="js/empresasPorPais.js"></script>
-  <script src="js/rotasAvancadas.js"></script>
-  <script src="js/planeamentoAvancado.js"></script>
-  <script src="js/game.js"></script>
-  
-
-  <!-- Inicializador -->
-  <script>
-    window.onload = () => {
-      if (!loadGame()) {
-        renderCriacaoPerfil();
-      }
-    };
-  </script>
-
-
-  <div id="notificacoes" class="notificacoes-container"></div>
+  <script src="js/main.js"></script>
 </body>
 </html>
