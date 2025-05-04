@@ -2,19 +2,28 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8" />
-  <title>TranspLogiSimve - Menu</title>
+  <title>TranspLogiSimve - Início</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <div class="menu">
-    <h1>TranspLogiSimve</h1>
-    <input type="text" id="playerName" placeholder="Nome do Jogador" />
-    <input type="text" id="companyName" placeholder="Nome da Empresa" />
-    <div class="buttons">
-      <button onclick="confirmarInicio()">Modo Carreira (Cidade)</button>
-      <button onclick="window.location.href = 'internacional.html'">Modo Internacional</button>
-    </div>
+  <div id="startMenu">
+    <h1>Bem-vindo ao TranspLogiSimve</h1>
+    <label for="playerName">Nome do Jogador:</label>
+    <input type="text" id="playerName" placeholder="Ex: Mario" />
+
+    <label for="companyName">Nome da Empresa:</label>
+    <input type="text" id="companyName" placeholder="Ex: EuroExpress" />
+
+    <label for="difficulty">Dificuldade:</label>
+    <select id="difficulty">
+      <option value="easy">Fácil</option>
+      <option value="normal" selected>Média</option>
+      <option value="hard">Difícil</option>
+    </select>
+
+    <button onclick="startGame()">Entrar</button>
   </div>
-  <script src="js/login.js"></script>
+
+  <script src="js/start.js"></script>
 </body>
 </html>

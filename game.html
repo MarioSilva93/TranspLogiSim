@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <title>TranspLogiSimve - Jogo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="css/game.css" />
+</head>
+<body>
+  <div id="gameHeader"></div>
+
+  <div id="container">
+    <div id="sidebar">
+      <h2>Empresa</h2>
+      <p id="playerInfo"></p>
+
+      <h3>Carrinhas</h3>
+      <div id="vans"></div>
+
+      <h3>Entregas Ativas</h3>
+      <ul id="deliveries"></ul>
+
+      <button onclick="dispatchRoute()">Despachar Carrinha</button>
+
+      <h3>Relatórios</h3>
+      <button onclick="openReport()">Ver Estatísticas</button>
+      <div id="reportPanel" style="display:none;">
+        <p>Total de Entregas: <span id="totalDeliveries">0</span></p>
+        <p>Carrinhas compradas: <span id="vansBought">2</span></p>
+      </div>
+    </div>
+
+    <div id="map"></div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>

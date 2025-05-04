@@ -1,1 +1,0 @@
-console.log('TranspLogiSimve 9.1 ready');
