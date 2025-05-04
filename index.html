@@ -37,17 +37,20 @@
         <span>🚚 Frota: <strong id="qtdFrota">--</strong></span>
         <span>👥 Empregados: <strong id="qtdMotoristas">--</strong></span>
       </header>
-    
+
       <section id="uiContainer" class="painel-section">
-        <!-- O conteúdo principal será injetado aqui pelo ui.js -->
+        <!-- O conteúdo principal será injetado aqui -->
       </section>
     </main>
 
-    <!-- Mapa (à direita, quando aplicável) -->
+    <!-- Mapa -->
     <div id="mapaContainer">
       <div id="map"></div>
     </div>
   </div>
+
+  <!-- 🔔 Container para notificações -->
+  <div id="notificacoes" class="notificacoes-container"></div>
 
   <!-- Scripts -->
   <script src="js/utils.js"></script>
@@ -68,13 +71,9 @@
   <script>
     window.onload = () => {
       if (!loadGame()) {
-        renderCriacaoPerfil(); // inicia novo fluxo
+        renderCriacaoPerfil(); // Inicia novo fluxo de perfil
       }
     };
   </script>
-
-<!-- 🔔 Container para os toasts -->
-<div id="notificacoes" class="notificacoes-container"></div>
-
 </body>
 </html>

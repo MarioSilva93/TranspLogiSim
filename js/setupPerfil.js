@@ -1,4 +1,4 @@
-// Lista de países e suas cidades principais
+// 🌍 Lista de países e cidades principais
 const paisesECidades = {
     "Suíça": ["Zurique", "Genebra", "Lausana", "Basileia", "Berna", "Uster"],
     "Alemanha": ["Berlim", "Munique", "Hamburgo", "Frankfurt", "Colónia"],
@@ -7,35 +7,61 @@ const paisesECidades = {
     "Portugal": ["Lisboa", "Porto", "Coimbra", "Braga", "Faro"]
   };
   
+  // 🚛 Empresas por país
+  const empresasPorPais = {
+    "Suíça": ["DPD", "Planzer", "Galliker"],
+    "Alemanha": ["Dachser", "DB Schenker", "Hermes"],
+    "França": ["La Poste", "Chronopost", "Geodis"],
+    "Espanha": ["SEUR", "Correos Express", "MRW"],
+    "Portugal": ["CTT Expresso", "Nacex", "Torrestir"]
+  };
+  
+  // 🧾 Interface inicial de criação de perfil
   function renderCriacaoPerfil() {
     let html = `
       <div class="inicio">
         <h2>🎮 Bem-vindo ao Simulador de Logística</h2>
         <p>Digite seu nome e escolha uma localização inicial:</p>
         <input id="playerName" placeholder="Seu nome" /><br><br>
+  
         <select id="paisSelect" onchange="atualizarCidades()">
           <option value="">🌍 Selecione um país</option>
           ${Object.keys(paisesECidades).map(p => `<option>${p}</option>`).join('')}
         </select><br><br>
-        <select id="cidadeSelect"><option value="">🏙️ Selecione uma cidade</option></select><br><br>
+  
+        <select id="cidadeSelect">
+          <option value="">🏙️ Selecione uma cidade</option>
+        </select><br><br>
+  
+        <div id="empresaContainer">
+          <select id="empresaSelect" disabled>
+            <option value="">🏢 Selecione uma empresa</option>
+          </select>
+        </div><br>
+  
         <button onclick="confirmarPerfil()">✅ Criar Perfil</button>
       </div>
     `;
     document.getElementById("uiContainer").innerHTML = html;
   }
   
-  
-  // Atualiza cidades conforme país
+  // 🔄 Atualiza cidades ao selecionar país
   function atualizarCidades() {
     const pais = document.getElementById("paisSelect").value;
     const cidades = paisesECidades[pais] || [];
-    const cidadeSelect = document.getElementById("cidadeSelect");
+    const empresas = empresasPorPais[pais] || [];
   
+    const cidadeSelect = document.getElementById("cidadeSelect");
     cidadeSelect.innerHTML = `<option value="">🏙️ Selecione uma cidade</option>` +
       cidades.map(c => `<option>${c}</option>`).join('');
+  
+    const empresaSelect = document.getElementById("empresaSelect");
+    empresaSelect.disabled = false;
+    empresaSelect.innerHTML = `<option value="">🏢 Selecione uma empresa</option>` +
+      empresas.map(e => `<option>${e}</option>`).join('');
   }
   
-  // Finaliza criação do perfil
+  // ✅ Cria o perfil e inicia o jogo
   function confirmarPerfil() {
     const nome = document.getElementById("playerName").value.trim();
     const pais = document.getElementById("paisSelect").value;
@@ -43,7 +69,7 @@ const paisesECidades = {
     const empresa = document.getElementById("empresaSelect").value;
   
     if (!nome || !pais || !cidade || !empresa) {
-      notificar("❗ Por favor, preencha todos os campos.");
+      notificar("❗ Por favor, preencha todos os campos.", "erro");
       return;
     }
   
@@ -69,7 +95,7 @@ const paisesECidades = {
     startClock();
     gerarPedidos(10);
     renderDispatcherUI();
-    notificar(`👋 Bem-vindo, ${nome}! Você foi contratado pela ${empresa} em ${cidade}.`);
-  }
   
+    notificar(`👋 Bem-vindo, ${nome}! Você foi contratado pela ${empresa} em ${cidade}.`, "sucesso");
+  }
   
