@@ -8,40 +8,100 @@ function renderDispatcherUI() {
   
     if (currentTab === 'cargas') {
       html += `<h2>📦 Cargas Pendentes</h2>`;
+    
       const pendentes = game.orders.filter(o => !o.assigned);
       if (pendentes.length === 0) {
         html += `<p>✅ Nenhuma carga pendente.</p>`;
       } else {
+        html += `
+          <table class="tabela-cargas">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Origem</th>
+                <th>Destino</th>
+                <th>Carga</th>
+                <th>Peso</th>
+                <th>Distância</th>
+                <th>Prazo</th>
+                <th>Atribuir</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+    
         pendentes.forEach(o => {
-          html += `<div class="card">
-            <strong>Carga #${o.id}</strong><br>
-            De ${o.from} → ${o.to} - ${o.cargo} (${o.weight}t)<br>
-            Distância: ${o.distance} km | Prazo: ${o.deadline}h<br>
-            Atribuir a:
-            <select id="vehicleSelect_${o.id}">
-              <option value="">--Escolher Veículo--</option>
-              ${game.vehicles.map(v => v.status === "Disponível" ? `<option value="${v.id}">${v.name}</option>` : "").join('')}
-            </select>
-            <button onclick="assign(${o.id})">📤 Atribuir</button>
-          </div>`;
+          html += `
+            <tr>
+              <td>#${o.id}</td>
+              <td>${o.from}</td>
+              <td>${o.to}</td>
+              <td>${o.cargo}</td>
+              <td>${o.weight}t</td>
+              <td>${o.distance} km</td>
+              <td>${o.deadline} h</td>
+              <td>
+                <select id="vehicleSelect_${o.id}">
+                  <option value="">--Veículo--</option>
+                  ${game.vehicles
+                    .filter(v => v.status === "Disponível")
+                    .map(v => `<option value="${v.id}">${v.name}</option>`)
+                    .join('')}
+                </select>
+                <button onclick="assign(${o.id})">📤</button>
+              </td>
+            </tr>
+          `;
         });
+    
+        html += `</tbody></table>`;
       }
     }
+    
   
     if (currentTab === 'frota') {
       html += `<h2>🚚 Frota</h2>`;
+    
+      html += `
+        <table class="tabela-cargas">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>Tipo</th>
+              <th>Capacidade</th>
+              <th>Velocidade</th>
+              <th>Status</th>
+              <th>Manutenção</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+    
       game.vehicles.forEach(v => {
         const manut = v.manutencao ?? 100;
-        html += `<div class="card">
-          <strong>${v.name}</strong><br>
-          Tipo: ${v.type}<br>
-          Capacidade: ${v.capacity}t | Velocidade: ${v.speed}km/h<br>
-          Status: ${v.status}<br>
-          🛠️ Manutenção: ${manut}%<br>
-          ${manut < 100 && v.status === "Disponível" ? `<button onclick="enviarParaOficina(${v.id})">🔧 Reparar</button>` : ""}
-        </div>`;
+        html += `
+          <tr>
+            <td>${v.id}</td>
+            <td>${v.name}</td>
+            <td>${v.type}</td>
+            <td>${v.capacity}t</td>
+            <td>${v.speed} km/h</td>
+            <td>${v.status}</td>
+            <td>${manut}%</td>
+            <td>
+              ${manut < 100 && v.status === "Disponível"
+                ? `<button onclick="enviarParaOficina(${v.id})">🔧 Reparar</button>`
+                : "-"}
+            </td>
+          </tr>
+        `;
       });
+    
+      html += `</tbody></table>`;
     }
+    
   
     if (currentTab === 'loja') {
       html += `<h2>🛒 Loja de Veículos</h2>`;

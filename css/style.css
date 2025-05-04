@@ -141,4 +141,32 @@ body, html {
   .inicio input, .inicio select {
     max-width: 250px;
   }
+  .tabela-cargas {
+    width: 100%;
+    border-collapse: collapse;
+    background: #2e313d;
+    color: #ddd;
+    margin-top: 15px;
+    font-size: 14px;
+  }
+  
+  .tabela-cargas th,
+  .tabela-cargas td {
+    border: 1px solid #444;
+    padding: 8px 10px;
+    text-align: center;
+  }
+  
+  .tabela-cargas th {
+    background: #3a3d4b;
+    color: #00bcd4;
+  }
+  
+  .tabela-cargas select,
+  .tabela-cargas button {
+    margin-top: 5px;
+    padding: 4px 8px;
+    font-size: 13px;
+  }
+  
   
