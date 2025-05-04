@@ -145,9 +145,13 @@ function renderDispatcherUI() {
   
     document.getElementById("uiContainer").innerHTML = html;
   
-    // Atualizar topbar
+    // 🔧 Atualizar topbar COMPLETA
     document.getElementById("tempoJogo").textContent = formatarTempo(gameClock);
     document.getElementById("nomeEmpresa").textContent = game.company;
     document.getElementById("xpJogador").textContent = game.xp;
+    document.getElementById("dinheiroEmpresa").textContent = formatEuro(game.dinheiro);
+    document.getElementById("qtdFrota").textContent = game.vehicles.length;
+    document.getElementById("qtdMotoristas").textContent = game.staff ? game.staff.filter(m => m.ativo).length : 0;
   }
+  
   
