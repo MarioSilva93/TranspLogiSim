@@ -103,7 +103,20 @@ function renderDispatcherUI() {
       html += `<br><input id="saveNome" placeholder="Nome do perfil">
       <button onclick="saveProfile(document.getElementById('saveNome').value)">Salvar</button>`;
     }
-  
+    
+    if (currentTab === 'estatisticas') {
+      html += `
+        <h2>📈 Estatísticas</h2>
+        <div class="card">
+          <canvas id="graficoEntregas" height="120"></canvas>
+        </div>
+        <div class="card">
+          <canvas id="graficoXP" height="120"></canvas>
+        </div>`;
+      setTimeout(renderGraficos, 100);
+    }
+    
+    
     document.getElementById("uiContainer").innerHTML = html;
   
     // Atualizar topbar

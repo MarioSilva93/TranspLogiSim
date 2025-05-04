@@ -142,6 +142,19 @@ function completeDelivery(vehicle) {
   vehicle.delivery = null;
 
   renderDispatcherUI();
+
+  // Histórico de desempenho (para gráfico)
+  if (!game.player.historico) game.player.historico = [];
+  const bloco = Math.floor(gameClock / 30);
+  const ultimo = game.player.historico.at(-1);
+  if (!ultimo || ultimo.bloco !== bloco) {
+  game.player.historico.push({ bloco, entregas: 1, xp: game.xp });
+  } else {
+  ultimo.entregas += 1;
+  ultimo.xp = game.xp;
+  }
+
+
 }
 
 function assign(orderId) {
@@ -163,7 +176,7 @@ function assign(orderId) {
   }
 
   const deliveryTime = order.distance / vehicle.speed;
-  const deliveryMinutes = Math.round(deliveryTime * 60);
+  const deliveryMinutes = Math.round(deliveryTime * 45);
 
   const p1 = { lat: cityCoords[order.from][0], lng: cityCoords[order.from][1] };
   const p2 = { lat: cityCoords[order.to][0], lng: cityCoords[order.to][1] };

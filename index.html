@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -15,6 +16,7 @@
       <h2>🚚 Logística</h2>
       <nav>
         <button onclick="switchTab('painel')">📊 Painel</button>
+        <button onclick="switchTab('estatisticas')">📈 Estatísticas</button>
         <button onclick="switchTab('cargas')">📦 Cargas</button>
         <button onclick="switchTab('frota')">🚚 Frota</button>
         <button onclick="switchTab('loja')">🛒 Loja</button>
@@ -57,6 +59,7 @@
   <script src="js/empresa.js"></script>
   <script src="js/save.js"></script>
   <script src="js/ui.js"></script>
+  <script src="js/charts.js"></script>
   <script src="js/game.js"></script>
 
   <!-- Inicializador -->
