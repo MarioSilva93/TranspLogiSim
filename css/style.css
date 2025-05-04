@@ -148,16 +148,16 @@ body, html {
   }
   
   .tabela-cargas {
-    width: calc(100% - 40px);
-    max-width: 98%;
+    width: 100%;
+    max-width: 100%;
     margin: 0 auto;
     border-collapse: collapse;
     background: #2e313d;
     color: #ddd;
     font-size: 14px;
-    table-layout: auto;
+    table-layout: fixed;
   }
-
+  
   .tabela-cargas th,
   .tabela-cargas td {
     border: 1px solid #444;
