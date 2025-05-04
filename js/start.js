@@ -4,7 +4,7 @@ function startGame() {
     const difficulty = document.getElementById("difficulty").value;
   
     if (!player || !company) {
-      alert("Preenche todos os campos.");
+      showNotification("Preenche todos os campos.");
       return;
     }
   

@@ -60,27 +60,34 @@ function init() {
 }
 
 function refreshVans() {
-  const container = document.getElementById("vans");
-  container.innerHTML = "";
-  vans.forEach((van, index) => {
-    const box = document.createElement("div");
-    box.className = "van-box" + (index === selectedVanIndex ? " selected" : "");
-    box.innerHTML = `
-      <strong>${van.name}</strong><br>
-      Combustível: ${van.fuel}%<br>
-      Manutenção: ${van.maintenance}%<br>
-      XP: ${van.xp} | Nível: ${getLevel(van.xp)}
-      <div class="xp-bar">
-        <div class="xp-fill" style="width:${getXPPercent(van.xp)}%"></div>
-      </div>
-    `;
-    box.onclick = () => {
-      selectedVanIndex = index;
-      refreshVans();
-    };
-    container.appendChild(box);
-  });
+    const container = document.getElementById("vans");
+    container.innerHTML = "";
+
+    vans.forEach((van, index) => {
+        const box = document.createElement("div");
+        box.className = "van-box" + (index === selectedVanIndex ? " selected" : "");
+        box.innerHTML = `
+            <strong>${van.name}</strong><br>
+            Combustível: ${van.fuel}%<br>
+            Manutenção: ${van.maintenance}%<br>
+            XP: ${van.xp} | Nível: ${getLevel(van.xp)}
+            <div class="xp-bar">
+                <div class="xp-fill" style="width:${getXPPercent(van.xp)}%"></div>
+            </div>
+            <div>Peso: ${van.cargo}kg / ${van.maxLoad}kg</div>
+            <div class="load-bar">
+                <div class="load-fill" style="width:${(van.cargo / van.maxLoad) * 100}%"></div>
+            </div>
+        `;
+        box.onclick = () => {
+            selectedVanIndex = index;
+            refreshVans();
+        };
+        container.appendChild(box);
+    });
 }
+
+  
 
 function generateName() {
   const nomes = ["Anna M.", "Lukas R.", "Clara K.", "Jonas S.", "Nina F.", "Pedro V.", "Laura W."];
@@ -125,37 +132,84 @@ function updateDeliveryList() {
 }
 
 function addToRoute(lat, lng, weight) {
-  if (selectedVanIndex === null) return alert("Seleciona uma carrinha primeiro.");
-  const van = vans[selectedVanIndex];
-  if ((van.cargo + weight) > van.maxLoad) {
-    return alert("Carrinha sobrecarregada!");
-  }
-  van.cargo += weight;
-  van.route.push([lat, lng]);
-  L.polyline(van.route, { color: van.icon }).addTo(map);
+    if (selectedVanIndex === null) return showNotification("Seleciona uma carrinha primeiro.");
+    const van = vans[selectedVanIndex];
+  
+    // Verificar se a carga não excede a capacidade
+    if ((van.cargo + weight) > van.maxLoad) {
+      return showNotification("Carrinha sobrecarregada!");
+    }
+  
+    van.cargo += weight;
+  
+    // Adicionar o ponto à rota
+    van.route.push([lat, lng]);
+  
+    // Desenhar a linha no mapa ligando os pontos da rota
+    L.polyline(van.route, { color: van.icon }).addTo(map);
+  
+    // Atualizar o mapa
+    refreshVans();
 }
+  
 
 function dispatchRoute() {
-  if (selectedVanIndex === null) return;
-  const van = vans[selectedVanIndex];
-  if (!van.route.length) return;
-
-  if (van.marker) map.removeLayer(van.marker);
-  van.marker = L.marker(van.route[0]).addTo(map);
-  let step = 0;
-
-  function move() {
-    if (step >= van.route.length) return;
-    van.marker.setLatLng(van.route[step]);
-    van.fuel -= 5;
-    van.xp += 10;
-    refreshVans();
-    step++;
-    setTimeout(move, 1200);
-  }
-
-  move();
+    if (selectedVanIndex === null) return;
+    const van = vans[selectedVanIndex];
+    if (!van.route.length) return;
+  
+    // Remover a carrinha antiga
+    if (van.marker) map.removeLayer(van.marker);
+  
+    // Adicionar nova carrinha e iniciar o movimento
+    van.marker = L.marker(van.route[0]).addTo(map);
+  
+    // Desenhar a linha da rota no início
+    const routeLine = L.polyline(van.route, { color: van.icon }).addTo(map);
+  
+    let step = 0;
+  
+    // Função para mover a carrinha e desenhar a linha da rota progressivamente
+    function move() {
+        if (step >= van.route.length) {
+            // Resetar o peso da carrinha no final da rota
+            van.cargo = 0;  // A carrinha fica vazia
+    
+            // Notificar que a entrega foi feita e carrinha esvaziada
+            showNotification(`${van.name} terminou a entrega! Carrinha vazia agora.`, "success");
+    
+            // Atualizar a interface para refletir a carga zerada
+            refreshVans();  // Atualiza a barra de carga para 0
+    
+            return;  // Finaliza o movimento
+        }
+    
+        // Atualizar a posição da carrinha
+        van.marker.setLatLng(van.route[step]);
+    
+        // Atualizar o combustível, XP e a barra visual
+        van.fuel -= 5;
+        van.xp += 10;
+        refreshVans();
+    
+        // Ajustar automaticamente o mapa para a nova posição da carrinha
+        map.panTo(van.marker.getLatLng());  // Centraliza o mapa na posição da carrinha
+    
+        // Atualiza a linha da rota, desenhando progressivamente
+        const newRoute = van.route.slice(0, step + 1);  // Adiciona até o ponto atual
+        routeLine.setLatLngs(newRoute);  // Atualiza a linha da rota
+    
+        step++;
+    
+        // Continuar a mover a carrinha a cada 1,2 segundos
+        setTimeout(move, 1200);
+    }
+    
+    
+  
+    move();
 }
+  
 
 function placeFuelStations() {
   fuelStations.forEach(coords => {
@@ -166,7 +220,7 @@ function placeFuelStations() {
 }
 
 function refuelVan() {
-  if (selectedVanIndex === null) return alert("Seleciona uma carrinha!");
+  if (selectedVanIndex === null) return showNotification("Seleciona uma carrinha!");
   vans[selectedVanIndex].fuel = 100;
   refreshVans();
 }
@@ -180,7 +234,7 @@ function placeRepairShops() {
 }
 
 function repairVan() {
-  if (selectedVanIndex === null) return alert("Seleciona uma carrinha!");
+  if (selectedVanIndex === null) return showNotification("Seleciona uma carrinha!");
   vans[selectedVanIndex].maintenance = 100;
   refreshVans();
 }
@@ -194,7 +248,7 @@ function placeCenters() {
 }
 
 function resetVan() {
-  if (selectedVanIndex === null) return alert("Seleciona uma carrinha!");
+  if (selectedVanIndex === null) return showNotification("Seleciona uma carrinha!");
   const van = vans[selectedVanIndex];
   van.cargo = 0;
   van.route = [];
@@ -212,4 +266,29 @@ function updateReport() {
   document.getElementById("vansBought").innerText = vans.length;
 }
 
+function showNotification(message, type = "success") {
+    const notif = document.getElementById("notification");
+  
+    // Adicionar o tipo de notificação (sucesso, erro, alerta)
+    notif.className = "notification show " + type;
+    
+    // Adicionar ícone baseado no tipo
+    let icon = "";
+    if (type === "success") {
+      icon = "✔️"; // ícone de sucesso
+    } else if (type === "error") {
+      icon = "❌"; // ícone de erro
+    } else if (type === "warning") {
+      icon = "⚠️"; // ícone de alerta
+    }
+  
+    notif.innerHTML = `<span class="icon">${icon}</span>${message}`;
+  
+    // Fazer a notificação desaparecer após 3 segundos
+    setTimeout(() => {
+      notif.classList.remove("show");
+    }, 3000);
+}
+  
+  
 window.onload = init;
