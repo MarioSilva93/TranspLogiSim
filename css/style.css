@@ -142,6 +142,11 @@ body, html {
     max-width: 250px;
   }
 
+  .tabela-header {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  
   .tabela-cargas-wrapper {
     width: 100%;
     overflow-x: auto;
