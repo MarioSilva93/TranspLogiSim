@@ -22,6 +22,16 @@ const distributionCenters = [
   [47.343, 8.725]
 ];
 
+// Função para calcular o nível com base no XP
+function getLevel(xp) {
+    return Math.floor(xp / 100) + 1;
+  }
+  
+  // Função para calcular o percentual de XP para a barra visual
+  function getXPPercent(xp) {
+    return Math.min((xp % 100), 100);
+}
+  
 function init() {
   const player = sessionStorage.getItem("playerName");
   const company = sessionStorage.getItem("companyName");
