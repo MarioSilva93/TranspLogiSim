@@ -141,32 +141,37 @@ body, html {
   .inicio input, .inicio select {
     max-width: 250px;
   }
+  
+  .tabela-header {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  
   .tabela-cargas {
     width: 100%;
+    max-width: 98%;
+    margin: 0 auto;
     border-collapse: collapse;
     background: #2e313d;
     color: #ddd;
-    margin-top: 15px;
     font-size: 14px;
+    table-layout: fixed;
   }
   
   .tabela-cargas th,
   .tabela-cargas td {
     border: 1px solid #444;
-    padding: 8px 10px;
+    padding: 10px;
     text-align: center;
+    word-wrap: break-word;
   }
   
   .tabela-cargas th {
     background: #3a3d4b;
     color: #00bcd4;
-  }
-  
-  .tabela-cargas select,
-  .tabela-cargas button {
-    margin-top: 5px;
-    padding: 4px 8px;
+    font-weight: bold;
     font-size: 13px;
   }
+  
   
   
