@@ -1,102 +1,65 @@
 let map;
-let vehicleMarkers = {};
-let routeLines = {};
-let mapInitialized = false;
-
 const cityCoords = {
-  Uster: [47.347, 8.720],
-  Zurique: [47.3769, 8.5417],
-  Genebra: [46.2044, 6.1432],
-  Berna: [46.9481, 7.4474],
-  Lausana: [46.5197, 6.6323],
-  Basileia: [47.5596, 7.5886]
-};
+  "Zurique": [47.3769, 8.5417],
+  "Genebra": [46.2044, 6.1432],
+  "Lausana": [46.5197, 6.6323],
+  "Basileia": [47.5596, 7.5886],
+  "Berna": [46.9481, 7.4474],
+  "Uster": [47.3475, 8.7207],
 
-// Ícones reais
-const icons = {
-  'Camião': L.icon({
-    iconUrl: 'https://imagensempng.com.br/wp-content/uploads/2021/05/Caminhao-frete-Png-1024x1024.png',
-    iconSize: [28, 28],
-    iconAnchor: [14, 14],
-    popupAnchor: [0, -14]
-  }),
-  'Carrinha': L.icon({
-    iconUrl: 'https://e7.pngegg.com/pngimages/186/795/png-clipart-van-car-computer-icons-professional-services-compact-car-van-thumbnail.png',
-    iconSize: [24, 24],
-    iconAnchor: [12, 12],
-    popupAnchor: [0, -12]
-  })
+  "Berlim": [52.52, 13.405],
+  "Munique": [48.1351, 11.582],
+  "Hamburgo": [53.5511, 9.9937],
+  "Frankfurt": [50.1109, 8.6821],
+  "Colónia": [50.9375, 6.9603],
+
+  "Paris": [48.8566, 2.3522],
+  "Marselha": [43.2965, 5.3698],
+  "Lyon": [45.75, 4.85],
+  "Toulouse": [43.6047, 1.4442],
+  "Nice": [43.7102, 7.262],
+
+  "Madrid": [40.4168, -3.7038],
+  "Barcelona": [41.3851, 2.1734],
+  "Valência": [39.4699, -0.3763],
+  "Sevilha": [37.3891, -5.9845],
+  "Bilbau": [43.263, -2.935],
+
+  "Lisboa": [38.7169, -9.1399],
+  "Porto": [41.1579, -8.6291],
+  "Coimbra": [40.2033, -8.4103],
+  "Braga": [41.5454, -8.4265],
+  "Faro": [37.0194, -7.9304]
 };
 
 function setup() {
-  if (mapInitialized) return; // evita repetir
-  mapInitialized = true;
+  if (map) {
+    map.remove(); // 🧼 remove o mapa anterior
+    map = null;
+  }
 
-  setTimeout(() => {
-    map = L.map('map').setView([46.8, 8.3], 8);
+  map = L.map("map").setView([46.8, 8.33], 6);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors',
-      maxZoom: 18
-    }).addTo(map);
-
-    for (let city in cityCoords) {
-      const coord = cityCoords[city];
-      L.circleMarker(coord, {
-        radius: 6,
-        color: "#1e88e5",
-        fillColor: "#42a5f5",
-        fillOpacity: 0.8
-      }).addTo(map).bindTooltip(city, { permanent: true, direction: 'right' });
-    }
-
-    map.invalidateSize();
-  }, 300);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 18,
+    attribution: '© OpenStreetMap'
+  }).addTo(map);
 }
 
-function draw() {
-  if (!game || !map) return;
 
-  game.vehicles.forEach(vehicle => {
-    let lat, lng;
-    const key = `v_${vehicle.id}`;
+function focarMapaNaCidade(nomeCidade) {
+  const coords = cityCoords[nomeCidade];
+  if (map && coords) {
+    map.setView(coords, 10);
 
-    if (vehicle.delivery) {
-      const { fromCoords, toCoords, originalTime, remainingTime } = vehicle.delivery;
-      const progress = 1 - remainingTime / originalTime;
-      lat = lerp(fromCoords.lat, toCoords.lat, progress);
-      lng = lerp(fromCoords.lng, toCoords.lng, progress);
-
-      // Desenha linha apenas uma vez
-      if (!routeLines[key]) {
-        routeLines[key] = L.polyline(
-          [[fromCoords.lat, fromCoords.lng], [toCoords.lat, toCoords.lng]],
-          { color: 'orange', weight: 3, dashArray: '5, 5' }
-        ).addTo(map);
-      }
-    } else {
-      const baseCoord = cityCoords[vehicle.location];
-      lat = baseCoord?.[0] || 0;
-      lng = baseCoord?.[1] || 0;
-
-      if (routeLines[key]) {
-        map.removeLayer(routeLines[key]);
-        delete routeLines[key];
-      }
-    }
-
-    if (!vehicleMarkers[key]) {
-      const tipo = vehicle.type.trim();
-      const marker = L.marker([lat, lng], {
-        icon: icons[tipo] || icons['Camião']
-      }).addTo(map).bindTooltip(vehicle.name, { permanent: false });
-      vehicleMarkers[key] = marker;
-    } else {
-      vehicleMarkers[key].setLatLng([lat, lng]);
-    }
-  });
-}
-
-function lerp(start, end, amt) {
-  return start + (end - start) * amt;
+    L.circleMarker(coords, {
+      radius: 8,
+      color: "#4caf50",
+      fillColor: "#81c784",
+      fillOpacity: 0.8
+    })
+      .addTo(map)
+      .bindPopup(`📍 Cidade-sede: ${nomeCidade}`)
+      .openPopup();
+  }
 }

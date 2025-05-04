@@ -1,4 +1,3 @@
-// 🌍 Lista de países e cidades principais
 const paisesECidades = {
     "Suíça": ["Zurique", "Genebra", "Lausana", "Basileia", "Berna", "Uster"],
     "Alemanha": ["Berlim", "Munique", "Hamburgo", "Frankfurt", "Colónia"],
@@ -7,7 +6,6 @@ const paisesECidades = {
     "Portugal": ["Lisboa", "Porto", "Coimbra", "Braga", "Faro"]
   };
   
-  // 🧾 Interface inicial de criação de perfil
   function renderCriacaoPerfil() {
     let html = `
       <div class="inicio">
@@ -36,7 +34,6 @@ const paisesECidades = {
     document.getElementById("uiContainer").innerHTML = html;
   }
   
-  // 🔄 Atualiza cidades ao selecionar país
   function atualizarCidades() {
     const pais = document.getElementById("paisSelect").value;
     const cidades = paisesECidades[pais] || [];
@@ -52,7 +49,6 @@ const paisesECidades = {
       empresas.map(e => `<option>${e}</option>`).join('');
   }
   
-  // ✅ Cria o perfil e inicia o jogo
   function confirmarPerfil() {
     const nome = document.getElementById("playerName").value.trim();
     const pais = document.getElementById("paisSelect").value;
@@ -95,6 +91,7 @@ const paisesECidades = {
     generateOrders(10);
     renderDispatcherUI();
     setup();
+    focarMapaNaCidade(cidade); // NOVO: centraliza no mapa
   
     notificar(`👋 Bem-vindo, ${nome}! Você foi contratado pela ${empresa} em ${cidade}.`, "sucesso");
   }

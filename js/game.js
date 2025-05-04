@@ -71,40 +71,36 @@ function startDispatcherWork(company, nomeJogador) {
   setup(); // inicia o mapa após o UI estar pronto
 }
 
-function generateOrders(qtd = 10) {
-  const cargos = ['Roupas', 'Eletrônicos', 'Alimentos', 'Móveis', 'Medicamentos'];
-  const cidades = [
-    'Zurique', 'Genebra', 'Lausana', 'Basileia', 'Berna',
-    'Berlim', 'Munique', 'Hamburgo', 'Frankfurt', 'Colónia',
-    'Paris', 'Marselha', 'Lyon', 'Toulouse', 'Nice',
-    'Madrid', 'Barcelona', 'Valência', 'Sevilha', 'Bilbau',
-    'Lisboa', 'Porto', 'Coimbra', 'Braga', 'Faro'
-  ];
+function gerarPedidos(qtd = 10) {
+  const todasCidades = Object.keys(cityCoords);
+  const origemFixa = game.player.cidade; // cidade inicial escolhida
+  const paisJogador = game.player.pais;
 
   for (let i = 0; i < qtd; i++) {
-    const from = cidades[Math.floor(Math.random() * cidades.length)];
     let to;
     do {
-      to = cidades[Math.floor(Math.random() * cidades.length)];
-    } while (to === from);
+      to = todasCidades[Math.floor(Math.random() * todasCidades.length)];
+    } while (to === origemFixa); // evitar origem igual ao destino
 
-    const cargo = cargos[Math.floor(Math.random() * cargos.length)];
-    const distance = Math.floor(Math.random() * 400) + 50;
-    const weight = Math.floor(Math.random() * 10) + 1;
-    const deadline = Math.max((distance / 60).toFixed(1), 1.5);
+    const cargo = cargosPossiveis[Math.floor(Math.random() * cargosPossiveis.length)];
+    const distancia = Math.floor(Math.random() * 300) + 50;
+    const peso = Math.floor(Math.random() * 8) + 1;
+    const prazo = Math.max((distancia / 60).toFixed(1), 1.5);
 
     game.orders.push({
       id: 100 + i,
-      from,
+      from: origemFixa,
       to,
       cargo,
-      weight,
-      distance,
-      deadline: parseFloat(deadline),
+      distance: distancia,
+      weight: peso,
+      deadline: parseFloat(prazo),
       assigned: false
     });
   }
 }
+
+
 
 
 function startClock() {
@@ -119,6 +115,8 @@ function startClock() {
 }
 
 function updateDeliveries() {
+  if (!game || !game.vehicles) return; // 🔒 garante que game existe
+
   game.vehicles.forEach(vehicle => {
     if (vehicle.delivery) {
       vehicle.delivery.remainingTime--;
@@ -128,6 +126,7 @@ function updateDeliveries() {
     }
   });
 }
+
 
 function completeDelivery(vehicle) {
   const order = vehicle.delivery.order;
