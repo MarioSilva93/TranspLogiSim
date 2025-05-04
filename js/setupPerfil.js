@@ -71,16 +71,19 @@ const paisesECidades = {
       sede: cidade,
       pais: pais,
       xp: 0,
-      nivel: 1,
       dinheiro: 500000,
+      salario: 2000,
+      nivel: "Dispatcher Júnior",
+      ultimoPagamento: 0,
+
       vehicles: [
         {
           id: 1, type: 'Carrinha', capacity: 3, speed: 60,
-          status: 'Disponível', delivery: null, location: cidade, name: 'Carrinha 1'
+          status: 'Disponível', entregas: [], location: cidade, name: 'Carrinha 1'
         },
         {
           id: 2, type: 'Camião', capacity: 10, speed: 80,
-          status: 'Disponível', delivery: null, location: cidade, name: 'Camião 2'
+          status: 'Disponível', entregas: [], location: cidade, name: 'Camião 2'
         }
       ],
       staff: [],

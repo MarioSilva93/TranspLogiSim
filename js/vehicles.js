@@ -23,7 +23,7 @@ const lojaVeiculos = [
       capacity: v.capacidade,
       speed: v.velocidade,
       status: 'Disponível',
-      delivery: null,
+      entregas: [],
       location: 'Uster',
       name: `${v.nome} #${novoId}`
     };

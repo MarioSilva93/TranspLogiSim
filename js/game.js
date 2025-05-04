@@ -55,11 +55,11 @@ function startDispatcherWork(company, nomeJogador) {
     vehicles: [
       {
         id: 1, type: 'Carrinha', capacity: 3, speed: 60,
-        status: 'Disponível', delivery: null, location: 'Uster', name: 'Carrinha 1'
+        status: 'Disponível', entregas: [], location: 'Uster', name: 'Carrinha 1'
       },
       {
         id: 2, type: 'Camião', capacity: 10, speed: 80,
-        status: 'Disponível', delivery: null, location: 'Zurique', name: 'Camião 2'
+        status: 'Disponível', entregas: [], location: 'Zurique', name: 'Camião 2'
       }
     ],
     orders: []
@@ -119,13 +119,35 @@ function updateDeliveries() {
   if (!game || !game.vehicles) return; // 🔒 garante que game existe
 
   game.vehicles.forEach(vehicle => {
-    if (vehicle.delivery) {
-      vehicle.delivery.remainingTime--;
-      if (vehicle.delivery.remainingTime <= 0) {
-        completeDelivery(vehicle);
+    if (vehicle.entregas?.length > 0) {
+      const atual = vehicle.entregas[0];
+      atual.remainingTime--;
+      if (atual.remainingTime <= 0) {
+        completeDeliveryAvancado(vehicle);
       }
     }
+    
   });
+}
+
+function completeDeliveryAvancado(vehicle) {
+  const entrega = vehicle.entregas.shift(); // remove a primeira
+  const order = entrega.order;
+  const noPrazo = entrega.originalTime <= order.deadline * 60;
+  completarEntregaComXP(noPrazo);
+  game.player.entregas++;
+  if (noPrazo) game.player.entregasNoPrazo++;
+  const ganho = Math.round(order.distance * 10 + order.weight * 50);
+  game.dinheiro += ganho;
+  vehicle.location = order.to;
+
+  if (vehicle.entregas.length === 0) {
+    vehicle.status = "Disponível";
+  }
+
+  notificar(`🚚 Entrega #${order.id} finalizada!`);
+  renderDispatcherUI();
+  atualizarMapa();
 }
 
 
@@ -188,6 +210,11 @@ function assign(orderId) {
   const deliveryTime = order.distance / vehicle.speed;
   const deliveryMinutes = Math.round(deliveryTime * 45);
 
+  if (!cityCoords[order.from] || !cityCoords[order.to]) {
+    alert("Erro: cidade não mapeada!");
+    return;
+  }
+  
   const p1 = { lat: cityCoords[order.from][0], lng: cityCoords[order.from][1] };
   const p2 = { lat: cityCoords[order.to][0], lng: cityCoords[order.to][1] };
 

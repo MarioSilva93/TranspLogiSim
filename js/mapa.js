@@ -1,5 +1,6 @@
 let map;
-let vehicleLayer = null;
+let vehicleMarkers = {};
+let routeLines = {};
 
 const cityCoords = {
   "Zurique": [47.3769, 8.5417],
@@ -34,74 +35,79 @@ const cityCoords = {
   "Faro": [37.0194, -7.9304]
 };
 
+const icons = {
+  'Camião': L.icon({
+    iconUrl: 'https://imagensempng.com.br/wp-content/uploads/2021/05/Caminhao-frete-Png-1024x1024.png',
+    iconSize: [28, 28],
+    iconAnchor: [14, 14],
+    popupAnchor: [0, -14]
+  }),
+  'Carrinha': L.icon({
+    iconUrl: 'https://e7.pngegg.com/pngimages/186/795/png-clipart-van-car-computer-icons-professional-services-compact-car-van-thumbnail.png',
+    iconSize: [24, 24],
+    iconAnchor: [12, 12],
+    popupAnchor: [0, -12]
+  })
+};
+
 function setup() {
   if (map) {
-    map.remove(); // remove mapa anterior
+    map.remove();
     map = null;
   }
 
-  map = L.map("map").setView([46.8, 8.33], 6);
+  const cidadeInicial = game?.sede ?? "Zurique";
+  const coords = cityCoords[cidadeInicial] || [47.3769, 8.5417];
+
+  map = L.map("map").setView(coords, 7);
 
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 18,
-    attribution: '© OpenStreetMap'
+    attribution: '© OpenStreetMap contributors'
   }).addTo(map);
 
-  vehicleLayer = L.layerGroup().addTo(map);
-}
-
-function focarMapaNaCidade(nomeCidade) {
-  const coords = cityCoords[nomeCidade];
-  if (map && coords) {
-    map.setView(coords, 10);
-
-    L.circleMarker(coords, {
-      radius: 8,
-      color: "#4caf50",
-      fillColor: "#81c784",
+  for (const cidade in cityCoords) {
+    L.circleMarker(cityCoords[cidade], {
+      radius: 6,
+      color: "#1e88e5",
+      fillColor: "#42a5f5",
       fillOpacity: 0.8
-    })
-      .addTo(map)
-      .bindPopup(`📍 Cidade-sede: ${nomeCidade}`)
-      .openPopup();
+    }).addTo(map).bindTooltip(cidade, { permanent: false, direction: 'top' });
   }
 }
 
-function atualizarMapa() {
-  if (!map || !game || !game.vehicles) return;
-
-  vehicleLayer.clearLayers();
+function draw() {
+  if (!game || !map) return;
 
   game.vehicles.forEach(vehicle => {
-    if (vehicle.delivery) {
-      const { fromCoords, toCoords } = vehicle.delivery;
-      if (!fromCoords || !toCoords) return;
+    let lat, lng;
+    const key = `v_${vehicle.id}`;
 
-      const icons = {
-        'Camião': L.icon({
-          iconUrl: 'https://img.cdndsgni.com/preview/11825355.jpg',
-          iconSize: [32, 32],
-          iconAnchor: [16, 16],
-          popupAnchor: [0, -16]
-        }),
-        'Carrinha': L.icon({
-          iconUrl: 'https://img.cdndsgni.com/preview/12329727.jpg',
-          iconSize: [28, 28],
-          iconAnchor: [14, 14],
-          popupAnchor: [0, -14]
-        })
-      };
-      
+    if (vehicle.entregas?.length > 0) {
+      const entregaAtual = vehicle.entregas[0];
+      const { fromCoords, toCoords, originalTime, remainingTime } = entregaAtual;
+      const progress = 1 - remainingTime / originalTime;
+      lat = lerp(fromCoords.lat, toCoords.lat, progress);
+      lng = lerp(fromCoords.lng, toCoords.lng, progress);
+    
+      if (!routeLines[key]) {
+        routeLines[key] = L.polyline(
+          [[fromCoords.lat, fromCoords.lng], [toCoords.lat, toCoords.lng]],
+          { color: 'orange', weight: 3, dashArray: '5,5' }
+        ).addTo(map);
+      }
+    }
+    
 
-      L.marker(fromCoords, { icon: customIcon })
-        .addTo(vehicleLayer)
-        .bindPopup(`${vehicle.name}<br>Saída: ${vehicle.delivery.order.from}`);
-
-      L.marker(toCoords)
-        .addTo(vehicleLayer)
-        .bindPopup(`Destino: ${vehicle.delivery.order.to}`);
-
-      L.polyline([fromCoords, toCoords], { color: "orange" }).addTo(vehicleLayer);
+    if (!vehicleMarkers[key]) {
+      const icon = icons[vehicle.type] || icons['Camião'];
+      vehicleMarkers[key] = L.marker([lat, lng], { icon }).addTo(map).bindTooltip(vehicle.name);
+    } else {
+      vehicleMarkers[key].setLatLng([lat, lng]);
     }
   });
+}
+
+function lerp(start, end, amt) {
+  return start + (end - start) * amt;
 }

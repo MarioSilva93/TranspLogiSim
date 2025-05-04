@@ -7,13 +7,8 @@ function renderDispatcherUI() {
     let html = "";
   
     if (currentTab === 'cargas') {
-      html += `
-       <div class="tabela-header">
-          <h2>📦 Cargas Pendentes</h2>
-        </div>
-      `;
-
-    
+      html += `<button class="btn" onclick="renderPlanejamentoAvancado()">🧠 Planejamento Avançado</button><br><br>`;
+        
       const pendentes = game.orders.filter(o => !o.assigned);
       if (pendentes.length === 0) {
         html += `<p>✅ Nenhuma carga pendente.</p>`;
