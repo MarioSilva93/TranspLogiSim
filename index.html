@@ -2,27 +2,19 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8" />
-  <title>TranspLogiSimve</title>
+  <title>TranspLogiSimve - Menu</title>
   <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
-  <div class="topbar">
-    <span>Tempo: <span id="tempo">0</span>h</span>
-    <span>Saldo: <span id="saldo">0 €</span></span>
-    <span>XP: <span id="xp">0</span></span>
-    <button onclick="guardarJogo()">💾 Guardar</button>
-    <button onclick="carregarJogo()">📂 Carregar</button>
-    <button onclick="comprarVeiculo()">➕ Comprar Veículo (2000€)</button>
+  <div class="menu">
+    <h1>TranspLogiSimve</h1>
+    <input type="text" id="playerName" placeholder="Nome do Jogador" />
+    <input type="text" id="companyName" placeholder="Nome da Empresa" />
+    <div class="buttons">
+      <button onclick="confirmarInicio()">Modo Carreira (Cidade)</button>
+      <button onclick="window.location.href = 'internacional.html'">Modo Internacional</button>
+    </div>
   </div>
-  <div id="painel-entregas"></div>
-  <div id="painel-veiculos"></div>
-  <div id="notificacoes" class="notificacoes"></div>
-  <div id="map" style="height: 500px;"></div>
-
-  <script src="js/utils.js"></script>
-  <script src="js/mapa.js"></script>
-  <script src="js/main.js"></script>
+  <script src="js/login.js"></script>
 </body>
 </html>
