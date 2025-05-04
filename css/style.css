@@ -186,4 +186,17 @@ body, html {
     padding: 4px 8px;
     font-size: 13px;
   }
-  
+  /* Aumentar largura da última coluna */
+  .tabela-cargas th:last-child,
+  .tabela-cargas td:last-child {
+    width: 220px;
+    min-width: 220px;
+  }
+
+  /* Alinhar select e botão lado a lado */
+  .tabela-cargas td:last-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
