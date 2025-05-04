@@ -8,10 +8,10 @@ function renderDispatcherUI() {
   
     if (currentTab === 'cargas') {
       html += `
-      <div class="tabela-header">
-        <h2>📦 Cargas Pendentes</h2>
-      </div>
-    `;
+       <div class="tabela-header">
+          <h2>📦 Cargas Pendentes</h2>
+        </div>
+      `;
 
     
       const pendentes = game.orders.filter(o => !o.assigned);
