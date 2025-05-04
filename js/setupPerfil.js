@@ -77,15 +77,24 @@ const paisesECidades = {
       xp: 0,
       nivel: 1,
       dinheiro: 10000,
-      vehicles: [],
+      vehicles: [
+        {
+          id: 1, type: 'Carrinha', capacity: 3, speed: 60,
+          status: 'Disponível', delivery: null, location: cidade, name: 'Carrinha 1'
+        },
+        {
+          id: 2, type: 'Camião', capacity: 10, speed: 80,
+          status: 'Disponível', delivery: null, location: cidade, name: 'Camião 2'
+        }
+      ],
       staff: [],
-      orders: [],
-      entregasCompletas: 0
+      orders: []
     };
   
     startClock();
-    gerarPedidos(10);
+    generateOrders(10);
     renderDispatcherUI();
+    setup();
   
     notificar(`👋 Bem-vindo, ${nome}! Você foi contratado pela ${empresa} em ${cidade}.`, "sucesso");
   }
