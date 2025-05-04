@@ -89,7 +89,7 @@ function renderVeiculos() {
 function atribuirEntrega(id) {
   const entrega = entregas.find(e => e.id === id);
   const veiculo = veiculos.find(v => v.livre && v.combustivel > 10);
-  if (!veiculo) return alert("Sem veículos livres ou com combustível suficiente!");
+  if (!veiculo) return notificar("Sem veículos livres ou com combustível suficiente!");
 
   veiculo.livre = false;
   veiculo.combustivel -= 10;
@@ -100,14 +100,14 @@ function atribuirEntrega(id) {
     xp += entrega.peso * 2;
     veiculo.livre = true;
     render();
-    alert(`Entrega concluída por ${veiculo.nome}`);
+    notificar(`Entrega concluída por ${veiculo.nome}`);
   });
 
   render();
 }
 
 function comprarVeiculo() {
-  if (saldo < 2000) return alert("Saldo insuficiente!");
+  if (saldo < 2000) return notificar("Saldo insuficiente!");
   const id = veiculos.length + 1;
   veiculos.push({ id, nome: "Carrinha " + String.fromCharCode(64 + id), livre: true, combustivel: 100, manuten: 100 });
   saldo -= 2000;
@@ -116,7 +116,7 @@ function comprarVeiculo() {
 
 function guardarJogo() {
   localStorage.setItem("transp_save", JSON.stringify({ tempo, saldo, xp, veiculos }));
-  alert("Jogo guardado!");
+  notificar("Jogo guardado!");
 }
 
 function carregarJogo() {

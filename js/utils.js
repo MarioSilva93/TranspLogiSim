@@ -5,6 +5,7 @@ function lerp(a, b, t) {
 
 function notificar(msg, tipo = 'info') {
   const container = document.getElementById('notificacoes');
+  if (!container) return console.warn("Elemento #notificacoes não encontrado!");
   const toast = document.createElement('div');
   toast.className = 'toast ' + tipo;
   toast.textContent = msg;
