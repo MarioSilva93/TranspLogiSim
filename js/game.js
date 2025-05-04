@@ -83,6 +83,29 @@ function refreshVans() {
             selectedVanIndex = index;
             refreshVans();
         };
+        box.ondragover = (e) => e.preventDefault();
+        box.ondrop = (e) => {
+          e.preventDefault();
+          const deliveryIndex = e.dataTransfer.getData("text/plain");
+          const delivery = deliveries[deliveryIndex];
+          const van = vans[index];
+        
+          if ((van.cargo + delivery.weight) > van.maxLoad) {
+            showNotification("Carrinha sobrecarregada!", "error");
+            return;
+          }
+        
+          van.cargo += delivery.weight;
+          van.route.push(delivery.coords);
+          L.polyline(van.route, { color: van.icon }).addTo(map);
+        
+          deliveryLayerGroup.removeLayer(delivery.marker);
+          deliveries.splice(deliveryIndex, 1);
+          updateDeliveryList();
+          refreshVans();
+        };
+        
+        
         container.appendChild(box);
     });
 }
@@ -90,10 +113,16 @@ function refreshVans() {
   
 
 function generateName() {
-  const nomes = ["Anna M.", "Lukas R.", "Clara K.", "Jonas S.", "Nina F.", "Pedro V.", "Laura W."];
-  return nomes[Math.floor(Math.random() * nomes.length)];
+    const nomes = ["Clara", "Pedro", "Nina", "Jonas", "Laura", "Fabio", "Marta", "Luis", "Sara", "André"];
+    const apelidos = ["Silva", "Müller", "Keller", "Costa", "Schmidt", "Ferreira", "Meier", "Ribeiro"];
+    return `${nomes[Math.floor(Math.random() * nomes.length)]} ${apelidos[Math.floor(Math.random() * apelidos.length)]}`;
 }
-
+  
+function generateStore() {
+    const lojas = ["Lidl Uster", "Migros Greifensee", "Coop Supermarkt", "ALDI SUISSE", "Denner", "Fressnapf", "Interdiscount"];
+    return lojas[Math.floor(Math.random() * lojas.length)];
+}
+  
 function generateCoords() {
   const lat = 47.34 + Math.random() * 0.03;
   const lng = 8.70 + Math.random() * 0.03;
@@ -104,10 +133,11 @@ function addDelivery() {
   if (deliveries.length >= maxDeliveries) return;
 
   const name = generateName();
+  const store = generateStore();
   const coords = generateCoords();
   const weight = Math.floor(Math.random() * 300) + 100;
   const marker = L.marker(coords).addTo(deliveryLayerGroup)
-    .bindPopup(`<b>${name}</b><br>Peso: ${weight}kg<br><button onclick="addToRoute(${coords}, ${weight})">Adicionar à Rota</button>`);
+  .bindPopup(`<b>${name}</b><br>Loja: ${store}<br>Peso: ${weight}kg<br><button onclick="addToRoute(${coords}, ${weight})">Adicionar à Rota</button>`);
   deliveries.push({ name, coords, weight, marker });
 
   updateDeliveryList();
@@ -122,14 +152,20 @@ function updateDeliveries() {
 }
 
 function updateDeliveryList() {
-  const list = document.getElementById("deliveries");
-  list.innerHTML = "";
-  deliveries.forEach(d => {
-    const li = document.createElement("li");
-    li.textContent = d.name;
-    list.appendChild(li);
-  });
+    const list = document.getElementById("deliveries");
+    list.innerHTML = "";
+    deliveries.forEach((d, i) => {
+      const li = document.createElement("li");
+      li.textContent = `${d.name} — ${generateStore()} (${d.weight}kg)`;
+      li.draggable = true;
+      li.dataset.index = i;
+      li.ondragstart = (e) => {
+        e.dataTransfer.setData("text/plain", i);
+      };
+      list.appendChild(li);
+    });
 }
+  
 
 function addToRoute(lat, lng, weight) {
     if (selectedVanIndex === null) return showNotification("Seleciona uma carrinha primeiro.");
