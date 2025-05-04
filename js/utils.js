@@ -44,3 +44,12 @@ function lerp(start, end, amt) {
     }, duracao);
   }
   
+  function recomecarJogo() {
+    localStorage.removeItem("savegame");
+    game = null;
+    gameClock = 0;
+  
+    // Reinicia o fluxo de criação de perfil
+    renderCriacaoPerfil();
+  }
+  
