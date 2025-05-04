@@ -71,34 +71,35 @@ function startDispatcherWork(company, nomeJogador) {
   setup(); // inicia o mapa após o UI estar pronto
 }
 
-function gerarPedidos(qtd = 10) {
-  const todasCidades = Object.keys(cityCoords);
-  const origemFixa = game.player.cidade; // cidade inicial escolhida
-  const paisJogador = game.player.pais;
+function generateOrders(qtd = 10) {
+  const cargos = ['Roupas', 'Eletrônicos', 'Alimentos', 'Móveis', 'Medicamentos'];
+  const todasCidades = Object.values(paisesECidades).flat(); // ← todas as cidades da Europa
+  const cidadeOrigem = game.sede;
 
   for (let i = 0; i < qtd; i++) {
     let to;
     do {
       to = todasCidades[Math.floor(Math.random() * todasCidades.length)];
-    } while (to === origemFixa); // evitar origem igual ao destino
+    } while (to === cidadeOrigem);
 
-    const cargo = cargosPossiveis[Math.floor(Math.random() * cargosPossiveis.length)];
-    const distancia = Math.floor(Math.random() * 300) + 50;
-    const peso = Math.floor(Math.random() * 8) + 1;
-    const prazo = Math.max((distancia / 60).toFixed(1), 1.5);
+    const cargo = cargos[Math.floor(Math.random() * cargos.length)];
+    const distance = Math.floor(Math.random() * 400) + 50;
+    const weight = Math.floor(Math.random() * 10) + 1;
+    const deadline = Math.max((distance / 60).toFixed(1), 1.5);
 
     game.orders.push({
       id: 100 + i,
-      from: origemFixa,
+      from: cidadeOrigem,
       to,
       cargo,
-      distance: distancia,
-      weight: peso,
-      deadline: parseFloat(prazo),
+      weight,
+      distance,
+      deadline: parseFloat(deadline),
       assigned: false
     });
   }
 }
+
 
 
 
