@@ -40,32 +40,36 @@ const paisesECidades = {
     const nome = document.getElementById("playerName").value.trim();
     const pais = document.getElementById("paisSelect").value;
     const cidade = document.getElementById("cidadeSelect").value;
+    const empresa = document.getElementById("empresaSelect").value;
   
-    if (!nome || !pais || !cidade) {
-      notificar("❌ Preencha todos os campos!", "erro");
+    if (!nome || !pais || !cidade || !empresa) {
+      notificar("❗ Por favor, preencha todos os campos.");
       return;
     }
   
     game = {
       player: {
         nome,
-        pais,
-        cidade,
         entregas: 0,
         entregasNoPrazo: 0,
         dinheiroTotal: 0
       },
+      company: empresa,
+      sede: cidade,
+      pais: pais,
       xp: 0,
       nivel: 1,
-      company: null, // ainda não selecionada
-      dinheiro: 50000,
+      dinheiro: 10000,
       vehicles: [],
       staff: [],
       orders: [],
-      cidadeAtual: cidade
+      entregasCompletas: 0
     };
   
-    notificar(`✅ Perfil criado em ${cidade}, ${pais}`, "sucesso");
-    renderSelecaoEmpresa(pais);
+    startClock();
+    gerarPedidos(10);
+    renderDispatcherUI();
+    notificar(`👋 Bem-vindo, ${nome}! Você foi contratado pela ${empresa} em ${cidade}.`);
   }
+  
   
