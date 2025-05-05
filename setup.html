@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <title>TransLogisticSimulator - Perfil</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body {
+      background-color: #f9f9f9;
+      text-align: center;
+      padding: 40px;
+    }
+    .profile-box {
+      background-color: #fff;
+      padding: 30px;
+      margin: auto;
+      border-radius: 10px;
+      max-width: 400px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    input {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .btn-group button {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-box">
+    <h1>TransLogisticSimulator</h1>
+    <p>Começa por configurar o teu perfil:</p>
+
+    <input type="text" id="playerName" placeholder="Nome do Jogador" />
+    <input type="text" id="companyName" placeholder="Nome da Empresa" />
+
+    <div class="btn-group">
+      <button onclick="startNewGame()">Novo Jogo</button>
+      <button onclick="continueGame()">Continuar Jogo</button>
+      <button onclick="resetProgress()">Reiniciar Jogo</button>
+    </div>
+  </div>
+
+  <script src="js/setup.js"></script>
+</body>
+</html>

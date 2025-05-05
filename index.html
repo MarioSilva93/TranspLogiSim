@@ -2,30 +2,49 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8" />
-  <title>TranspLogiSimve - Início</title>
+  <title>TransLogisticSimulator - Jogo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <div id="startMenu">
-    <h1>Bem-vindo ao TranspLogiSimve</h1>
-    <label for="playerName">Nome do Jogador:</label>
-    <input type="text" id="playerName" placeholder="Ex: Mario" />
 
-    <label for="companyName">Nome da Empresa:</label>
-    <input type="text" id="companyName" placeholder="Ex: EuroExpress" />
-
-    <label for="difficulty">Dificuldade:</label>
-    <select id="difficulty">
-      <option value="easy">Fácil</option>
-      <option value="normal" selected>Média</option>
-      <option value="hard">Difícil</option>
-    </select>
-
-    <button onclick="startGame()">Entrar</button>
+  <div id="gameHeader">
+    <h1>TransLogisticSimulator</h1>
   </div>
 
-  <script src="js/start.js"></script>
+  <div id="container">
+    <div id="sidebar">
+      <h2>Empresa</h2>
+      <p id="playerInfo">Jogador: <br>Empresa:</p>
+      <p id="money">Saldo: 0€</p>
+      <button onclick="buyVan()">Comprar Carrinha (8.000€)</button>
+
+      <h3>Frota</h3>
+      <div id="vans"></div>
+
+      <h3>Entregas Ativas</h3>
+      <ul id="deliveries"></ul>
+
+      <h3>Relatórios</h3>
+      <button onclick="openReport()">Ver Estatísticas</button>
+      <div id="reportPanel" style="display:none;">
+        <p>Total de Entregas: <span id="totalDeliveries">0</span></p>
+        <p>Carrinhas compradas: <span id="vansBought">3</span></p>
+      </div>
+    </div>
+
+    <div id="notification" class="notification"></div>
+    <div id="map"></div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/addresses.js"></script>
   <script src="js/game.js"></script>
+   
 
 </body>
 </html>
